@@ -10,6 +10,8 @@ public class PowerUp
     public void collect() {
 
     }
-    public void addLives() {}
+    public void addLives() {
+
+    }
 
 }
