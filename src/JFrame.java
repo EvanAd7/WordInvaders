@@ -4,7 +4,7 @@ class JFrame
 {
     private static void initWindow() {
         // create a window frame and set the title in the toolbar
-        javax.swing.JFrame window = new javax.swing.JFrame("Word Invader");
+        javax.swing.JFrame window = new javax.swing.JFrame("Word Invaders");
         // when we close the window, stop the app
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
@@ -19,7 +19,7 @@ class JFrame
         window.addKeyListener(level1);
 
         // don't allow the user to resize the window
-        window.setResizable(false);
+        window.setResizable(true);
         // fit the window size around the components (just our jpanel).
         // pack() should be called after setResizable() to avoid issues on some platforms
         window.pack();
