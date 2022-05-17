@@ -6,7 +6,7 @@ import javax.swing.*;
 public class Level extends JPanel implements ActionListener, KeyListener {
 
     int levelNum;
-    int time;
+    long time;
     int points;
     boolean cleared;
     Player player;
@@ -31,5 +31,12 @@ public class Level extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+    public int getTime()
+    {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        long elapsedSeconds = elapsedTime / 1000;
+        return (int) elapsedSeconds % 60;
     }
 }
