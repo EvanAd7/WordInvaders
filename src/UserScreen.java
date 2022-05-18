@@ -7,11 +7,15 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //instance variables
     Player player;
     GameManager manager;
+    Timer drawFrame;
 
     //constructor
     public UserScreen() {
         player = new Player(500, 900, 50, 50);
         manager = new GameManager(player);
+
+        drawFrame = new Timer(1000/60, this);
+        drawFrame.start();
     }
 
     //paint the screen with active objects
@@ -20,7 +24,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         drawLevelScreen(g);
     }
 
-    //draw current user scree
+    //draw current user screen
     public void drawLevelScreen(Graphics g) {
         manager.draw(g);
     }
@@ -53,6 +57,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        player.setSpeedX(0);
     }
 }
