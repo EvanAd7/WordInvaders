@@ -1,26 +1,32 @@
-public class Player
+import java.awt.*;
+
+public class Player extends GameObject
 {
-    int position;
-    String typed;
-    int lives;
-    boolean alive;
-    public Player(int lives) {
-
+    //constructor
+    public Player(int x, int y, int width, int height) {
+        super(x, y, width, height, 10, 10);
     }
-    //public void updatePosition(keyInput) {
 
-    //}
-    public void updateLives() {
-
+    //draw player object
+    public void draw(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(getX(), getY(), getWidth(), getHeight());
     }
-    public int getLives() {
 
-        return 0;
+    //movement methods
+    public void moveLeft() {
+        setSpeedX(-10);
     }
-    public void isDead() {
-
+    public void moveRight() {
+        setSpeedX(10);
     }
-    //public String typedWord(keyInputs) {
 
-    //}
+    //update the player
+    public void updatePlayer() {
+        //if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {
+        setX(getX()+getSpeedX());
+        //}
+
+        super.update();
+    }
 }
