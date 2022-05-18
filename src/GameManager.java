@@ -2,7 +2,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameManager {
+public class GameManager implements ActionListener {
     //instance variables
     Player player;
 
@@ -14,5 +14,10 @@ public class GameManager {
     //draw the screen
     public void draw(Graphics g) {
         player.draw(g);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

@@ -14,6 +14,12 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         manager = new GameManager(player);
     }
 
+    //paint the screen with active objects
+    @Override
+    public void paintComponent(Graphics g) {
+        drawLevelScreen(g);
+    }
+
     //draw current user scree
     public void drawLevelScreen(Graphics g) {
         manager.draw(g);
@@ -27,6 +33,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //key and action listener methods
     @Override
     public void actionPerformed(ActionEvent e) {
+        updateLevelScreen();
         repaint();
     }
 
