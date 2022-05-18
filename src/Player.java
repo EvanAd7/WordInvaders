@@ -7,19 +7,20 @@ public class Player
     public Player(int lives) {
 
     }
-    public void updatePosition(keyInput) {
+    //public void updatePosition(keyInput) {
 
-    }
+    //}
     public void updateLives() {
 
     }
     public int getLives() {
 
+        return 0;
     }
     public void isDead() {
 
     }
-    public String typedWord(keyInputs) {
+    //public String typedWord(keyInputs) {
 
-    }
+    //}
 }

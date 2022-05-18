@@ -2,6 +2,7 @@ import java.awt.*;
 
 public class GameObject {
 
+    //instance variables
     private int x;
     private int y;
     private int width;
@@ -14,6 +15,7 @@ public class GameObject {
 
     Rectangle collisionBox;
 
+    //constructor
     GameObject(int x, int y, int width, int height, int speedX, int speedY) {
 
         this.x = x;
@@ -26,6 +28,7 @@ public class GameObject {
         collisionBox = new Rectangle(x, y, width, height);
     }
 
+    //basic update method
     void update() {
 
         collisionBox.setBounds(x, y, width, height);

@@ -8,14 +8,14 @@ public class Enemy
     public Enemy(double speed, String word) {
 
     }
-    boolean validWord(Player.typedWord()) {
+    //boolean validWord(Player.typedWord()) {
 
-    }
-    public void addPoints() {
-        if (validWord(typed)) {
+    //}
+    //public void addPoints() {
+        //if (validWord(typed)) {
 
-        }
-    }
+        //}
+    //}
     public void despawn() {
 
     }
