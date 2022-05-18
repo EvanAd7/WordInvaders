@@ -18,12 +18,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
         drawFrame = new Timer(1000/60, this);
         drawFrame.start();
-        Timer timer = new Timer(1000/60, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              UserScreen.this.repaint();
-            }
-        });
+        Timer timer = new Timer(1000/60, e -> UserScreen.this.repaint());
         timer.start();
     }
     //paint the screen with active objects
