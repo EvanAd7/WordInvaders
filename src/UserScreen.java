@@ -8,8 +8,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     Player player;
     GameManager manager;
     Timer drawFrame;
-    int inc;
-    int x = -1;
+   
 
     //constructor
     public UserScreen() {
@@ -18,20 +17,10 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
         drawFrame = new Timer(1000/60, this);
         drawFrame.start();
-        Timer timer = new Timer(1000/60, e -> UserScreen.this.repaint());
-        timer.start();
     }
     //paint the screen with active objects
     @Override
     public void paintComponent(Graphics g) {
-        if(x > getWidth()) inc = -5;
-        if(x < 0) inc = 5;
-
-        x += inc;
-
-        // here we clear everything
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
         drawLevelScreen(g);
     }
 
