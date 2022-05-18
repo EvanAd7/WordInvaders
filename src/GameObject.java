@@ -8,22 +8,20 @@ public class GameObject {
     private int width;
     private int height;
 
-    private int speedX;
-    private int speedY;
+    private int speedX = 0;
+    private int speedY = 0;
 
     boolean active = true;
 
     Rectangle collisionBox;
 
     //constructor
-    GameObject(int x, int y, int width, int height, int speedX, int speedY) {
+    GameObject(int x, int y, int width, int height) {
 
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speedX = speedX;
-        this.speedY = speedY;
 
         collisionBox = new Rectangle(x, y, width, height);
     }

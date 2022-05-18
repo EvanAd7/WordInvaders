@@ -1,15 +1,19 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //instance variables
+    public static BufferedImage image;
+    public static boolean needImage = true;
+    public static boolean gotImage = false;
+
     Player player;
     GameManager manager;
     Timer drawFrame;
-    int inc;
-    int x = -1;
 
     //constructor
     public UserScreen() {
@@ -18,25 +22,21 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
         drawFrame = new Timer(1000/60, this);
         drawFrame.start();
-        Timer timer = new Timer(1000/60, e -> UserScreen.this.repaint());
-        timer.start();
+
+        if (needImage) {
+            loadImage ("space.jpg");
+        }
     }
+
     //paint the screen with active objects
     @Override
     public void paintComponent(Graphics g) {
-        if(x > getWidth()) inc = -5;
-        if(x < 0) inc = 5;
-
-        x += inc;
-
-        // here we clear everything
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
         drawLevelScreen(g);
     }
 
     //draw current user screen
     public void drawLevelScreen(Graphics g) {
+        g.drawImage(image, 0, 0, null);
         manager.draw(g);
     }
 
@@ -50,7 +50,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e) {
         updateLevelScreen();
         repaint();
-
     }
 
     @Override
@@ -70,5 +69,17 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         player.setSpeedX(0);
+    }
+
+    void loadImage(String imageFile) {
+        if (needImage) {
+            try {
+                image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+                gotImage = true;
+            } catch (Exception e) {
+
+            }
+            needImage = false;
+        }
     }
 }

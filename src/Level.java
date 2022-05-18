@@ -32,11 +32,4 @@ public class Level extends JPanel implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
-    public int getTime()
-    {
-        long startTime = System.currentTimeMillis();
-        long elapsedTime = System.currentTimeMillis() - startTime;
-        long elapsedSeconds = elapsedTime / 1000;
-        return (int) elapsedSeconds % 60;
-    }
 }
