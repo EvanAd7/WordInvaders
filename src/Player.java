@@ -4,7 +4,7 @@ public class Player extends GameObject
 {
     //constructor
     public Player(int x, int y, int width, int height) {
-        super(x, y, width, height, 10, 10);
+        super(x, y, width, height, 0, 0);
     }
 
     //draw player object

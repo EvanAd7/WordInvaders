@@ -1,6 +1,7 @@
-import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.*;
 
 public class Level extends JPanel implements ActionListener, KeyListener {
@@ -9,9 +10,9 @@ public class Level extends JPanel implements ActionListener, KeyListener {
     long time;
     int points;
     boolean cleared;
-    Player player;
-    ArrayList<Enemy> enemies;
-    ArrayList<PowerUp> powerUps;
+    private Player player;
+    private ArrayList<Enemy> enemies;
+    private ArrayList<PowerUp> powerUps;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -25,7 +26,6 @@ public class Level extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-
     }
 
     @Override
