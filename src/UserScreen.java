@@ -19,11 +19,11 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //constructor
     public UserScreen() {
-        player = new Player(500, 900, 50, 50);
+        player = new Player(500, 860, 90, 90);
         manager = new GameManager(player);
 
         //timer that runs the "frame rate"
-        drawFrame = new Timer(1000/144, this);
+        drawFrame = new Timer(1000/90, this);
         drawFrame.start();
 
         if (needImage) {
