@@ -1,3 +1,7 @@
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,6 +12,8 @@ public class GameManager implements ActionListener {
     private Player player;
     private ArrayList<Enemy> enemies;
     private ArrayList<Laser> lasers;
+    //points variable
+    private int points = 0;
 
     //constructor
     public GameManager(Player player) {
@@ -47,6 +53,7 @@ public class GameManager implements ActionListener {
         }
 
         checkCollisions();
+        //checkForEnemy();
         deleteInactive();
     }
 
@@ -57,20 +64,46 @@ public class GameManager implements ActionListener {
                 if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
                     enemy.setActive(false);
                     laser.setActive(false);
+                    points = points + 100;
                 }
             }
         }
     }
 
+    /*
+    public boolean checkForEnemy()
+    {
+        for(Enemy enemy : enemies){
+            if(enemy.isActive())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean wordNeeded(){
+        for(Enemy enemy : enemies){
+            if(enemy.isActive())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+     */
+
+
+
     //deletes inactive objects every frame
     public void deleteInactive() {
-        for (int i=enemies.size()-1; i>=0; i--) {
+        for (int i = enemies.size() - 1; i >= 0; i--) {
             if (!(enemies.get(i).isActive())) {
                 enemies.remove(i);
             }
         }
 
-        for (int i=lasers.size()-1; i>=0; i--) {
+        for (int i = lasers.size() - 1; i >= 0; i--) {
             if (!(lasers.get(i).isActive())) {
                 lasers.remove(i);
             }
@@ -82,4 +115,12 @@ public class GameManager implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         spawnEnemy();
     }
+
+    //getter for points
+    public String getPoints() {
+        String output = new String();
+        output = "" + points;
+        return output;
+    }
+
 }

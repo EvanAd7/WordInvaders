@@ -3,7 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
@@ -46,7 +49,51 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     public void drawLevelScreen(Graphics g) {
         g.drawImage(image, 0, 0, null);
         manager.drawObjects(g);
+
+        //text field for points value in the top-left of the user screen
+        Graphics2D g2 = (Graphics2D) g; //temporary 2d Graphics so the font can be manipulated
+        Font currentFont = g2.getFont(); //getting the current font snd setting it to a temporary Font variable
+        Font newFont = currentFont.deriveFont(currentFont.getSize() * 1.8F); //making a new font bigger
+        g2.setFont(newFont); //setting font to new bigger font
+        g2.setColor(Color.GREEN); //changing color so it stands out
+        g2.drawString("Score: " + manager.getPoints(), 50, 50); //drawing the string onto the screen
+        /*
+        Graphics2D g3 = (Graphics2D) g;
+        Font currentFont2 = g3.getFont(); //getting the current font snd setting it to a temporary Font variable
+        Font newFont2 = currentFont2.deriveFont(currentFont2.getSize() * 1.8F); //making a new font bigger
+        g3.setFont(newFont2); //setting font to new bigger font
+        g3.setColor(Color.WHITE); //changing color so it stands out
+        String[] parts;
+        if(manager.checkForEnemy()) {
+            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\tobyp_8bbjnrg\\OneDrive\\Desktop\\strings.txt"))) {
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+
+                while (line != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                    line = br.readLine();
+
+                }
+                String everything = sb.toString();
+                parts = everything.split(" ");
+
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            if(wordUsed())
+            {
+                g3.drawString(parts[((int) (Math.random() * parts.length))], 415, 50);
+            }
+        }
+
+        */
+
     }
+
+
+
 
     //updates current level screen at a certain rate
     public void updateLevelScreen() {
