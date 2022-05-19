@@ -14,7 +14,7 @@ public class Enemy extends GameObject {
         super(x, y, width, height, 0, 1);
 
         if (needImage) {
-            loadImage("enemy.png");
+            loadImage("enemy1.png");
         }
     }
 
