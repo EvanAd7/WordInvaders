@@ -1,14 +1,10 @@
 import java.awt.*;
 
-public class Player extends GameObject
-{
-    //instance variables
-    int speedVal = 14;
+public class Player extends GameObject {
 
     //constructor
     public Player(int x, int y, int width, int height) {
-        super(x, y, width, height);
-        setSpeedX(0);
+        super(x, y, width, height, 0, 0);
     }
 
     //draw initial player object
@@ -19,10 +15,10 @@ public class Player extends GameObject
 
     //movement methods (moves player by incrementing the x-position by a "speed" value)
     public void moveLeft() {
-        setSpeedX(-speedVal);
+        setSpeedX(-14);
     }
     public void moveRight() {
-        setSpeedX(speedVal);
+        setSpeedX(14);
     }
 
     //update the player's position according to the speed
