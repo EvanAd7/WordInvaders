@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
@@ -82,9 +83,11 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     void loadImage(String imageFile) {
         if (needImage) {
             try {
-                image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+                image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
                 gotImage = true;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                System.out.println("Error at at: " + e.getMessage());
+            }
             needImage = false;
         }
     }
