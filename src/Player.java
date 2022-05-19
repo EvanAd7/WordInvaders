@@ -3,8 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-public class Player extends GameObject
-{
+public class Player extends GameObject {
     //image loading variables
     public static BufferedImage image;
     public static boolean needImage = true;
@@ -33,6 +32,7 @@ public class Player extends GameObject
     public void moveLeft() {
         setSpeedX(-13);
     }
+
     public void moveRight() {
         setSpeedX(13);
     }
@@ -40,8 +40,8 @@ public class Player extends GameObject
     //update the player's position according to the speed
     public void updatePlayer() {
         //check if player remains within bounds
-        if ((getX()+getSpeedX()+13) >= 0 && (getX()+getWidth()+getSpeedX()) < WordInvadersDriver.WIDTH) {
-            setX(getX()+getSpeedX());
+        if ((getX() + getSpeedX() + 13) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {
+            setX(getX() + getSpeedX());
         }
         super.update();
     }
@@ -53,7 +53,7 @@ public class Player extends GameObject
                 image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
                 gotImage = true;
             } catch (Exception e) {
-                System.out.println("Error at at: " + e.getMessage());
+                System.out.println("Error at: " + e.getMessage());
             }
             needImage = false;
         }

@@ -13,9 +13,10 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     public static boolean gotImage = false;
 
     //instance variables
-    Player player;
-    GameManager manager;
-    Timer drawFrame;
+    private Player player;
+    private GameManager manager;
+    private Timer drawFrame;
+    private Timer enemySpawner;
 
     //constructor
     public UserScreen() {
@@ -25,6 +26,10 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         //timer that runs the "frame rate"
         drawFrame = new Timer(1000/90, this);
         drawFrame.start();
+
+        //timer that spawns enemies at a "spawn rate"
+        enemySpawner = new Timer(2000, manager);
+        enemySpawner.start();
 
         if (needImage) {
             loadImage("space.jpg");
@@ -40,12 +45,13 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //draws the initial level screen
     public void drawLevelScreen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        manager.draw(g);
+        manager.drawObjects(g);
     }
 
-    //updates current level screen periodically
+    //updates current level screen at a certain rate
     public void updateLevelScreen() {
         player.updatePlayer();
+        manager.updateObjects();
     }
 
     //key and action listener methods
@@ -86,7 +92,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
                 gotImage = true;
             } catch (Exception e) {
-                System.out.println("Error at at: " + e.getMessage());
+                System.out.println("Error at: " + e.getMessage());
             }
             needImage = false;
         }
