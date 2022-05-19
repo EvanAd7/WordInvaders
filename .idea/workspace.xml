@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="added background fixed movement">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM__Changes_.xml" afterDir="false" />
+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="space jpeg">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +86,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652905995778</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="space jpeg">
+      <created>1652987294676</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1652987294676</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -108,6 +111,7 @@
     <MESSAGE value="int added" />
     <MESSAGE value="Added Classes" />
     <MESSAGE value="added background fixed movement" />
-    <option name="LAST_COMMIT_MESSAGE" value="added background fixed movement" />
+    <MESSAGE value="space jpeg" />
+    <option name="LAST_COMMIT_MESSAGE" value="space jpeg" />
   </component>
 </project>
