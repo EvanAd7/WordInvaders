@@ -11,9 +11,9 @@ public class GameObject {
     private int speedX = 0;
     private int speedY = 0;
 
-    boolean active = true;
+    private boolean active = true;
 
-    Rectangle collisionBox;
+    private Rectangle collisionBox;
 
     //constructor
     GameObject(int x, int y, int width, int height) {
@@ -26,9 +26,8 @@ public class GameObject {
         collisionBox = new Rectangle(x, y, width, height);
     }
 
-    //basic update method
+    //superclass update method updates the collision box
     void update() {
-
         collisionBox.setBounds(x, y, width, height);
     }
 
@@ -51,6 +50,12 @@ public class GameObject {
     public int getSpeedY() {
         return speedY;
     }
+    public boolean isActive() {
+        return active;
+    }
+    public Rectangle getCollisionBox() {
+        return collisionBox;
+    }
 
     //setters
     public void setX(int x) {
@@ -70,5 +75,8 @@ public class GameObject {
     }
     public void setSpeedY(int speedY) {
         this.speedY = speedY;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

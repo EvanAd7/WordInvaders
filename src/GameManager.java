@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class GameManager implements ActionListener {
+
     //instance variables
     Player player;
 
@@ -11,7 +12,7 @@ public class GameManager implements ActionListener {
         this.player = player;
     }
 
-    //draw the screen
+    //draw initial game objects onto the screen
     public void draw(Graphics g) {
         player.draw(g);
     }
