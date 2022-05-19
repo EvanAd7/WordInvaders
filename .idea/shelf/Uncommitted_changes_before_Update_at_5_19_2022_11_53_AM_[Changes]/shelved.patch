@@ -1,0 +1,86 @@
+Index: src/Level.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Random;\r\nimport javax.swing.*;\r\n\r\npublic class Level extends JPanel implements ActionListener, KeyListener {\r\n\r\n    int levelNum;\r\n    long time;\r\n    int points;\r\n    boolean cleared;\r\n    private Player player;\r\n    private ArrayList<Enemy> enemies;\r\n    private ArrayList<PowerUp> powerUps;\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n    }\r\n\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n\r\n    }\r\n    public int getTime()\r\n    {\r\n        long startTime = System.currentTimeMillis();\r\n        long elapsedTime = System.currentTimeMillis() - startTime;\r\n        long elapsedSeconds = elapsedTime / 1000;\r\n        return (int) elapsedSeconds % 60;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Level.java b/src/Level.java
+--- a/src/Level.java	(revision a31de48cc371242082dc50134bef184888fd85a5)
++++ b/src/Level.java	(date 1652986379868)
+@@ -21,7 +21,7 @@
+ 
+     @Override
+     public void keyTyped(KeyEvent e) {
+-
++        
+     }
+ 
+     @Override
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"powerUp class\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/UserScreen.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/UserScreen.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29IwL4yc2Jdr0cwPglVEZQGLwwt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/pinnellt3185/IdeaProjects/WordInvaders/src&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"\" />\r\n      <created>1652813851118</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652813851118</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"int added\">\r\n      <created>1652814922890</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652814922890</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"int added\" />\r\n    <MESSAGE value=\"Added Classes\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Added Classes\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision a31de48cc371242082dc50134bef184888fd85a5)
++++ b/.idea/workspace.xml	(date 1652986382475)
+@@ -4,16 +4,9 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="powerUp class">
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml" afterDir="false" />
++    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="space jpeg">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -49,6 +42,11 @@
+     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+   }
+ }</component>
++  <component name="RecentsManager">
++    <key name="MoveFile.RECENT_KEYS">
++      <recent name="H:\Projects\WordInvaders\src" />
++    </key>
++  </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+@@ -65,7 +63,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1652814922890</updated>
+     </task>
+-    <option name="localTasksCounter" value="2" />
++    <task id="LOCAL-00002" summary="space jpeg">
++      <created>1652905788387</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1652905788387</updated>
++    </task>
++    <option name="localTasksCounter" value="3" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -82,6 +87,7 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="int added" />
+     <MESSAGE value="Added Classes" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Added Classes" />
++    <MESSAGE value="space jpeg" />
++    <option name="LAST_COMMIT_MESSAGE" value="space jpeg" />
+   </component>
+ </project>
+\ No newline at end of file
