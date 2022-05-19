@@ -24,7 +24,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         manager = new GameManager(player);
 
         //timer that runs the "frame rate"
-        drawFrame = new Timer(1000/90, this);
+        drawFrame = new Timer(1000 / 90, this);
         drawFrame.start();
 
         //timer that spawns enemies at a "spawn rate"
@@ -65,7 +65,8 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //reads when a key is typed by the user
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     //reads when the user presses a key and translates into code
     @Override

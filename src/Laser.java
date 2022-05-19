@@ -30,7 +30,7 @@ public class Laser extends GameObject {
 
     //update the laser's position according to the speed
     public void updateLaser() {
-        setY(getY()-getSpeedY());
+        setY(getY() - getSpeedY());
         super.update();
     }
 

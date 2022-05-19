@@ -30,7 +30,7 @@ public class Enemy extends GameObject {
 
     //update the enemy's position according to the speed
     public void updateEnemy() {
-        setY(getY()+getSpeedY());
+        setY(getY() + getSpeedY());
         super.update();
     }
 

@@ -18,12 +18,12 @@ public class GameManager implements ActionListener {
 
     //adds an enemy to the array list, priming it to be spawned
     public void spawnEnemy() {
-        enemies.add(new Enemy((int) (Math.random() * (WordInvadersDriver.WIDTH-70)), 0, 90, 90));
+        enemies.add(new Enemy((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90));
     }
 
     //adds a new laser to the array list
     public void shootLaser() {
-        lasers.add(new Laser(player.getX()+40, 860, 8, 40));
+        lasers.add(new Laser(player.getX() + 40, 860, 8, 40));
     }
 
     //draw game objects onto the screen
@@ -37,13 +37,43 @@ public class GameManager implements ActionListener {
         }
     }
 
-    //update all objects
+    //update all objects each frame
     public void updateObjects() {
         for (Enemy enemy : enemies) {
             enemy.updateEnemy();
         }
         for (Laser laser : lasers) {
             laser.updateLaser();
+        }
+
+        checkCollisions();
+        deleteInactive();
+    }
+
+    //checks which objects have been collided with
+    public void checkCollisions() {
+        for (Enemy enemy : enemies) {
+            for (Laser laser : lasers) {
+                if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
+                    enemy.setActive(false);
+                    laser.setActive(false);
+                }
+            }
+        }
+    }
+
+    //deletes inactive objects every frame
+    public void deleteInactive() {
+        for (int i=enemies.size()-1; i>=0; i--) {
+            if (!(enemies.get(i).isActive())) {
+                enemies.remove(i);
+            }
+        }
+
+        for (int i=lasers.size()-1; i>=0; i--) {
+            if (!(lasers.get(i).isActive())) {
+                lasers.remove(i);
+            }
         }
     }
 
