@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Enemy extends GameObject {
     //image loading variables
     public static BufferedImage image;
-    public static boolean needImage = false;
+    public static boolean needImage = true;
     public static boolean gotImage = false;
 
     //constructor
