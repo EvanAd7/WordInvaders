@@ -12,7 +12,7 @@ public class Player extends GameObject
     public static boolean gotImage = false;
     //constructor
     public Player(int x, int y, int width, int height) {
-        super(x, y, width, height);
+        super(x, y, width, height, 0, 0);
         if (needImage) {
             loadImage("player.png");
         }
