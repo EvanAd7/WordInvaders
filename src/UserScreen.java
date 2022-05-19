@@ -65,9 +65,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //reads when a key is typed by the user
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     //reads when the user presses a key and translates into code
     @Override
@@ -76,6 +74,10 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
             player.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             player.moveRight();
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            manager.shootLaser();
         }
     }
 
