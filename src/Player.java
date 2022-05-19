@@ -31,8 +31,6 @@ public class Player extends GameObject
     }
     //draw initial player object
     public void draw(Graphics g) {
-        //g.setColor(Color.BLACK);
-        //g.fillRect(getX(), getY(), getWidth(), getHeight());
         if (gotImage) {
             g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
         } else {
