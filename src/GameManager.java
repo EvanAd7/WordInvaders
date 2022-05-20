@@ -1,7 +1,3 @@
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -53,7 +49,6 @@ public class GameManager implements ActionListener {
         }
 
         checkCollisions();
-        //checkForEnemy();
         deleteInactive();
     }
 
@@ -69,30 +64,6 @@ public class GameManager implements ActionListener {
             }
         }
     }
-
-    /*
-    public boolean checkForEnemy()
-    {
-        for(Enemy enemy : enemies){
-            if(enemy.isActive())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean wordNeeded(){
-        for(Enemy enemy : enemies){
-            if(enemy.isActive())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-     */
-
 
     //deletes inactive objects every frame
     public void deleteInactive() {
@@ -119,5 +90,4 @@ public class GameManager implements ActionListener {
     public String getPoints() {
         return "" + points;
     }
-
 }

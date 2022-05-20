@@ -3,10 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
@@ -18,6 +15,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //instance variables
     private Player player;
     private GameManager manager;
+    private WordReader wordReader;
     private Timer drawFrame;
     private Timer enemySpawner;
 
@@ -25,6 +23,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     public UserScreen() {
         player = new Player(500, 860, 90, 90);
         manager = new GameManager(player);
+        wordReader = new WordReader();
 
         //timer that runs the "frame rate"
         drawFrame = new Timer(1000 / 90, this);
@@ -51,46 +50,14 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         manager.drawObjects(g);
 
         g.setFont(new Font("Arial", Font.PLAIN, 30));
+
         g.setColor(Color.GREEN);
         g.drawString("Score: " + manager.getPoints(), 10, 30);
+        g.drawString("Type: " + wordReader.getCurrentWord(), 415, 30);
 
-        /*
-        Graphics2D g3 = (Graphics2D) g;
-        Font currentFont2 = g3.getFont(); //getting the current font snd setting it to a temporary Font variable
-        Font newFont2 = currentFont2.deriveFont(currentFont2.getSize() * 1.8F); //making a new font bigger
-        g3.setFont(newFont2); //setting font to new bigger font
-        g3.setColor(Color.WHITE); //changing color so it stands out
-        String[] parts;
-        if(manager.checkForEnemy()) {
-            try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\tobyp_8bbjnrg\\OneDrive\\Desktop\\strings.txt"))) {
-                StringBuilder sb = new StringBuilder();
-                String line = br.readLine();
-
-                while (line != null) {
-                    sb.append(line);
-                    sb.append(System.lineSeparator());
-                    line = br.readLine();
-
-                }
-                String everything = sb.toString();
-                parts = everything.split(" ");
-
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if(wordUsed())
-            {
-                g3.drawString(parts[((int) (Math.random() * parts.length))], 415, 50);
-            }
-        }
-
-        */
-
+        g.setColor(Color.WHITE);
+        g.drawString(wordReader.getWordTyped(), 440, 70);
     }
-
-
-
 
     //updates current level's objects at a certain rate
     public void updateLevelScreen() {
@@ -98,7 +65,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         manager.updateObjects();
     }
 
-    //key and action listener methods
+    //key and action listener methods:
     //action performed method runs at a certain frame rate
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -115,14 +82,77 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //reads when the user presses a key and translates into code
     @Override
     public void keyPressed(KeyEvent e) {
+        //player movement controllers
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             player.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             player.moveRight();
         }
 
+        //check what the user is typing
+        if (e.getKeyCode() == KeyEvent.VK_A) {
+            wordReader.addLetter("a");
+        } else if (e.getKeyCode() == KeyEvent.VK_B) {
+            wordReader.addLetter("b");
+        } else if (e.getKeyCode() == KeyEvent.VK_C) {
+            wordReader.addLetter("c");
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            wordReader.addLetter("d");
+        } else if (e.getKeyCode() == KeyEvent.VK_E) {
+            wordReader.addLetter("e");
+        } else if (e.getKeyCode() == KeyEvent.VK_F) {
+            wordReader.addLetter("f");
+        } else if (e.getKeyCode() == KeyEvent.VK_G) {
+            wordReader.addLetter("g");
+        } else if (e.getKeyCode() == KeyEvent.VK_H) {
+            wordReader.addLetter("h");
+        } else if (e.getKeyCode() == KeyEvent.VK_I) {
+            wordReader.addLetter("i");
+        } else if (e.getKeyCode() == KeyEvent.VK_J) {
+            wordReader.addLetter("j");
+        } else if (e.getKeyCode() == KeyEvent.VK_K) {
+            wordReader.addLetter("k");
+        } else if (e.getKeyCode() == KeyEvent.VK_L) {
+            wordReader.addLetter("l");
+        } else if (e.getKeyCode() == KeyEvent.VK_M) {
+            wordReader.addLetter("m");
+        } else if (e.getKeyCode() == KeyEvent.VK_N) {
+            wordReader.addLetter("n");
+        } else if (e.getKeyCode() == KeyEvent.VK_O) {
+            wordReader.addLetter("o");
+        } else if (e.getKeyCode() == KeyEvent.VK_P) {
+            wordReader.addLetter("p");
+        } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+            wordReader.addLetter("q");
+        } else if (e.getKeyCode() == KeyEvent.VK_R) {
+            wordReader.addLetter("r");
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            wordReader.addLetter("s");
+        } else if (e.getKeyCode() == KeyEvent.VK_T) {
+            wordReader.addLetter("t");
+        } else if (e.getKeyCode() == KeyEvent.VK_U) {
+            wordReader.addLetter("u");
+        } else if (e.getKeyCode() == KeyEvent.VK_V) {
+            wordReader.addLetter("v");
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            wordReader.addLetter("w");
+        } else if (e.getKeyCode() == KeyEvent.VK_X) {
+            wordReader.addLetter("x");
+        } else if (e.getKeyCode() == KeyEvent.VK_Y) {
+            wordReader.addLetter("y");
+        } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+            wordReader.addLetter("z");
+        } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+            wordReader.backspace();
+        }
+
+        //if the user has typed the correct word, fire laser
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            manager.shootLaser();
+            if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
+                manager.shootLaser();
+            }
+            wordReader.setWordTyped("");
+            wordReader.newWord();
         }
     }
 

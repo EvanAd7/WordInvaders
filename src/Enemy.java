@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class Enemy extends GameObject {
+
     //image loading variables
     public static BufferedImage image;
     public static boolean needImage = true;
