@@ -17,7 +17,7 @@ public class PowerUp extends GameObject
 
     //constructor
     public PowerUp(int x, int y, int width, int height) {
-        super(x, y, width, height, 0, 10);
+        super(x, y, width, height, 0, 5);
 
         if (needImage) {
             loadImage("powerup.png");

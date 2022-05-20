@@ -30,6 +30,7 @@ public class GameManager implements ActionListener {
         lasers.add(new Laser(player.getX() + 40, 860, 8, 40));
     }
 
+    //adds a new power up to the array list
     public void spawnPowerUp() {
         powerups.add(new PowerUp((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90));
     }
