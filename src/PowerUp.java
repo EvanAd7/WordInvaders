@@ -19,9 +19,9 @@ public class PowerUp extends GameObject
     public PowerUp(int x, int y, int width, int height) {
         super(x, y, width, height, 0, 10);
 
-       // if (needImage) {
-       //     loadImage("powerUp.png");
-       // }
+        if (needImage) {
+            loadImage("powerup.png");
+        }
     }
     //public PowerUp(int multiplier, double speedChange) {
 
@@ -39,7 +39,7 @@ public class PowerUp extends GameObject
 
     //update the laser's position according to the speed
     public void updatePowerUp() {
-        setY(getY() - getSpeedY());
+        setY(getY() + getSpeedY());
         super.update();
     }
 

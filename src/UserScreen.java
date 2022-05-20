@@ -19,6 +19,8 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     private Timer drawFrame;
     private Timer enemySpawner;
 
+    private Timer powerUpSpawner;
+
     //constructor
     public UserScreen() {
         player = new Player(500, 860, 90, 90);
@@ -32,6 +34,10 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         //timer that spawns enemies at a "spawn rate"
         enemySpawner = new Timer(2000, manager);
         enemySpawner.start();
+
+        //timer that spawns powerups
+        powerUpSpawner = new Timer(5000, manager);
+        powerUpSpawner.start();
 
         if (needImage) {
             loadImage("space.jpg");

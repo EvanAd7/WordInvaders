@@ -126,6 +126,7 @@ public class GameManager implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         spawnEnemy();
+        spawnPowerUp();
     }
 
     //getters
