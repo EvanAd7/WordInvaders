@@ -8,6 +8,7 @@ public class GameManager implements ActionListener {
     private Player player;
     private ArrayList<Enemy> enemies;
     private ArrayList<Laser> lasers;
+    private ArrayList<PowerUp> powerups;
 
     private int points = 0;
 
@@ -16,6 +17,7 @@ public class GameManager implements ActionListener {
         this.player = player;
         enemies = new ArrayList<Enemy>();
         lasers = new ArrayList<Laser>();
+        powerups = new ArrayList<PowerUp>();
     }
 
     //adds an enemy to the array list, priming it to be spawned
@@ -28,6 +30,10 @@ public class GameManager implements ActionListener {
         lasers.add(new Laser(player.getX() + 40, 860, 8, 40));
     }
 
+    public void spawnPowerUp() {
+        powerups.add(new PowerUp((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90));
+    }
+
     //draw game objects onto the screen
     public void drawObjects(Graphics g) {
         player.draw(g);
@@ -36,6 +42,9 @@ public class GameManager implements ActionListener {
         }
         for (Laser laser : lasers) {
             laser.draw(g);
+        }
+        for (PowerUp powerup : powerups) {
+            powerup.draw(g);
         }
     }
 
@@ -46,6 +55,9 @@ public class GameManager implements ActionListener {
         }
         for (Laser laser : lasers) {
             laser.updateLaser();
+        }
+        for (PowerUp powerup : powerups) {
+            powerup.updatePowerUp();
         }
 
         checkCollisions();
@@ -63,6 +75,15 @@ public class GameManager implements ActionListener {
                 }
             }
         }
+        for (PowerUp powerup : powerups) {
+            for (Laser laser : lasers) {
+                if (powerup.getCollisionBox().intersects(laser.getCollisionBox())) {
+                    powerup.setActive(false);
+                    laser.setActive(false);
+                    points += 500;
+                }
+            }
+        }
     }
 
     //deletes inactive objects every frame
@@ -76,6 +97,12 @@ public class GameManager implements ActionListener {
         for (int i = lasers.size() - 1; i >= 0; i--) {
             if (!(lasers.get(i).isActive())) {
                 lasers.remove(i);
+            }
+        }
+
+        for (int i = powerups.size() - 1; i >= 0; i--) {
+            if (!(powerups.get(i).isActive())) {
+                powerups.remove(i);
             }
         }
     }
