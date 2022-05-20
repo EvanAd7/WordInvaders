@@ -12,7 +12,7 @@ public class GameManager implements ActionListener {
     private Player player;
     private ArrayList<Enemy> enemies;
     private ArrayList<Laser> lasers;
-    //points variable
+
     private int points = 0;
 
     //constructor
@@ -64,7 +64,7 @@ public class GameManager implements ActionListener {
                 if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
                     enemy.setActive(false);
                     laser.setActive(false);
-                    points = points + 100;
+                    points += 100;
                 }
             }
         }
@@ -94,7 +94,6 @@ public class GameManager implements ActionListener {
      */
 
 
-
     //deletes inactive objects every frame
     public void deleteInactive() {
         for (int i = enemies.size() - 1; i >= 0; i--) {
@@ -116,11 +115,9 @@ public class GameManager implements ActionListener {
         spawnEnemy();
     }
 
-    //getter for points
+    //getters
     public String getPoints() {
-        String output = new String();
-        output = "" + points;
-        return output;
+        return "" + points;
     }
 
 }

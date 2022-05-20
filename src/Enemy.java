@@ -18,7 +18,7 @@ public class Enemy extends GameObject {
         }
     }
 
-    //draw initial enemy objects
+    //draws enemy objects
     public void draw(Graphics g) {
         if (gotImage) {
             g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);

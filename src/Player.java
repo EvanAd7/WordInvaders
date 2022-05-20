@@ -18,7 +18,7 @@ public class Player extends GameObject {
         }
     }
 
-    //draw initial player object
+    //draws player object
     public void draw(Graphics g) {
         if (gotImage) {
             g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);

@@ -18,7 +18,7 @@ public class Laser extends GameObject {
         }
     }
 
-    //draw initial laser object
+    //draws laser object
     public void draw(Graphics g) {
         if (gotImage) {
             g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);

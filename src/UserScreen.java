@@ -39,24 +39,21 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-    //paint the screen (JPanel) with initial active objects
+    //paint the screen (JPanel) with active objects
     @Override
     public void paintComponent(Graphics g) {
         drawLevelScreen(g);
     }
 
-    //draws the initial level screen
+    //draws the level screen
     public void drawLevelScreen(Graphics g) {
         g.drawImage(image, 0, 0, null);
         manager.drawObjects(g);
 
-        //text field for points value in the top-left of the user screen
-        Graphics2D g2 = (Graphics2D) g; //temporary 2d Graphics so the font can be manipulated
-        Font currentFont = g2.getFont(); //getting the current font snd setting it to a temporary Font variable
-        Font newFont = currentFont.deriveFont(currentFont.getSize() * 1.8F); //making a new font bigger
-        g2.setFont(newFont); //setting font to new bigger font
-        g2.setColor(Color.GREEN); //changing color so it stands out
-        g2.drawString("Score: " + manager.getPoints(), 50, 50); //drawing the string onto the screen
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.setColor(Color.GREEN);
+        g.drawString("Score: " + manager.getPoints(), 10, 30);
+
         /*
         Graphics2D g3 = (Graphics2D) g;
         Font currentFont2 = g3.getFont(); //getting the current font snd setting it to a temporary Font variable
@@ -95,7 +92,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
 
 
-    //updates current level screen at a certain rate
+    //updates current level's objects at a certain rate
     public void updateLevelScreen() {
         player.updatePlayer();
         manager.updateObjects();
