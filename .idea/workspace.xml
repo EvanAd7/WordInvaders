@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="lives lost working">
-      <change afterPath="$PROJECT_DIR$/src/PowerUpManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_12_57_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_12_57_PM__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_1_12_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_1_12_PM__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_20_2022_12_01_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_20_2022_12_01_PM__Changes_.xml" afterDir="false" />
+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="fixed powerups">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PowerUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PowerUpSpawner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,7 +140,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653074726712</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fixed powerups">
+      <created>1653076524380</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1653076524380</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed powerups">
+      <created>1653076638076</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1653076638076</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -169,7 +178,8 @@
     <MESSAGE value="cleaned up fonts" />
     <MESSAGE value="TYPING WORKS" />
     <MESSAGE value="powerups" />
-    <option name="LAST_COMMIT_MESSAGE" value="powerups" />
+    <MESSAGE value="fixed powerups" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed powerups" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

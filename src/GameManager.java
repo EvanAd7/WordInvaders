@@ -125,7 +125,7 @@ public class GameManager implements ActionListener {
         }
     }
 
-    //spawn enemies at a certain rate (rate decided in UserScreen)
+    //spawn objects at a certain rate (rate decided in UserScreen)
     @Override
     public void actionPerformed(ActionEvent e) {
         spawnEnemy();
