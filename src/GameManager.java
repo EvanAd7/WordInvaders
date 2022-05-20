@@ -61,6 +61,7 @@ public class GameManager implements ActionListener {
         }
 
         checkCollisions();
+        lifeLoss();
         deleteInactive();
     }
 
@@ -83,6 +84,20 @@ public class GameManager implements ActionListener {
                     points += 500;
                 }
             }
+        }
+    }
+
+    //checks if the player has lost a life or lost the game
+    public void lifeLoss() {
+        for (Enemy enemy : enemies) {
+            if (enemy.getY() > player.getY()) {
+                enemy.setActive(false);
+                player.setLives(player.getLives()-1);
+            }
+        }
+
+        if (player.getLives() == 0) {
+            player.setActive(false);
         }
     }
 
