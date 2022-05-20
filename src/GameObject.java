@@ -11,8 +11,9 @@ public class GameObject {
     private int speedX;
     private int speedY;
 
-    private boolean active;
     private Rectangle collisionBox;
+
+    private boolean active;
 
     //constructor
     GameObject(int x, int y, int width, int height, int speedX, int speedY) {

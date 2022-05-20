@@ -54,6 +54,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.GREEN);
         g.drawString("Score: " + manager.getPoints(), 10, 30);
         g.drawString("Type: " + wordReader.getCurrentWord(), 415, 30);
+        g.drawString("Lives: " + player.getLives(), 870, 30);
 
         g.setColor(Color.WHITE);
         g.drawString(wordReader.getWordTyped(), 440, 70);

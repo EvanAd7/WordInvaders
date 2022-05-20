@@ -10,9 +10,13 @@ public class Player extends GameObject {
     public static boolean needImage = true;
     public static boolean gotImage = false;
 
+    //instance variables
+    private int lives;
+
     //constructor
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height, 0, 0);
+        lives = 3;
 
         if (needImage) {
             loadImage("player.png");
@@ -45,6 +49,16 @@ public class Player extends GameObject {
             setX(getX() + getSpeedX());
         }
         super.update();
+    }
+
+    //getters
+    public int getLives() {
+        return lives;
+    }
+
+    //setters
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
     //image loading method
