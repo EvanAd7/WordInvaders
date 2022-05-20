@@ -75,14 +75,6 @@ public class GameObject {
         this.y = y;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
     public void setSpeedX(int speedX) {
         this.speedX = speedX;
     }
