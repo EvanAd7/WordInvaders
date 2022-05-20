@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class PowerUp extends GameObject
 {
+
     //image loading variables
     public static BufferedImage image;
     public static boolean needImage = true;
