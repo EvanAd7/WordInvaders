@@ -14,17 +14,15 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //instance variables
     private Player player;
-    private GameManager manager;
+    private GameManager gameManager;
     private WordReader wordReader;
     private Timer drawFrame;
     private Timer enemySpawner;
 
-    private Timer powerUpSpawner;
-
     //constructor
     public UserScreen() {
         player = new Player(500, 860, 90, 90);
-        manager = new GameManager(player);
+        gameManager = new GameManager(player);
         wordReader = new WordReader();
 
         //timer that runs the "frame rate"
@@ -32,12 +30,8 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         drawFrame.start();
 
         //timer that spawns enemies at a "spawn rate"
-        enemySpawner = new Timer(2000, manager);
+        enemySpawner = new Timer(2000, gameManager);
         enemySpawner.start();
-
-        //timer that spawns powerups
-        powerUpSpawner = new Timer(5000, manager);
-        powerUpSpawner.start();
 
         if (needImage) {
             loadImage("space.jpg");
@@ -53,12 +47,12 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //draws the level screen
     public void drawLevelScreen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        manager.drawObjects(g);
+        gameManager.drawObjects(g);
 
         g.setFont(new Font("Arial", Font.PLAIN, 30));
 
         g.setColor(Color.GREEN);
-        g.drawString("Score: " + manager.getPoints(), 10, 30);
+        g.drawString("Score: " + gameManager.getPoints(), 10, 30);
         g.drawString("Type: " + wordReader.getCurrentWord(), 415, 30);
         g.drawString("Lives: " + player.getLives(), 870, 30);
 
@@ -69,7 +63,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //updates current level's objects at a certain rate
     public void updateLevelScreen() {
         player.updatePlayer();
-        manager.updateObjects();
+        gameManager.updateObjects();
     }
 
     //key and action listener methods:
@@ -156,7 +150,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         //if the user has typed the correct word, fire laser
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
-                manager.shootLaser();
+                gameManager.shootLaser();
             }
             wordReader.setWordTyped("");
             wordReader.newWord();

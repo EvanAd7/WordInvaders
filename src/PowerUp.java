@@ -10,24 +10,16 @@ public class PowerUp extends GameObject
     public static boolean needImage = true;
     public static boolean gotImage = false;
 
-    double speed;
-    int laserMultiplier;
-    int pointMultiplier;
-    int lifeGain;
-
     //constructor
     public PowerUp(int x, int y, int width, int height) {
-        super(x, y, width, height, 0, 10);
+        super(x, y, width, height, 0, 9);
 
         if (needImage) {
             loadImage("powerup.png");
         }
     }
-    //public PowerUp(int multiplier, double speedChange) {
 
-    //}
-
-    //draws laser object
+    //draws power up object
     public void draw(Graphics g) {
         if (gotImage) {
             g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
@@ -37,12 +29,13 @@ public class PowerUp extends GameObject
         }
     }
 
-    //update the laser's position according to the speed
+    //update the power-up's position according to the speed
     public void updatePowerUp() {
         setY(getY() + getSpeedY());
         super.update();
     }
 
+    //image loading method
     private void loadImage(String imageFile) {
         if (needImage) {
             try {
@@ -54,12 +47,4 @@ public class PowerUp extends GameObject
             needImage = false;
         }
     }
-
-    public void collect() {
-
-    }
-    public void addLives() {
-
-    }
-
 }

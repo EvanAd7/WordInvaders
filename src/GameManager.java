@@ -8,16 +8,17 @@ public class GameManager implements ActionListener {
     private Player player;
     private ArrayList<Enemy> enemies;
     private ArrayList<Laser> lasers;
-    private ArrayList<PowerUp> powerups;
+    private ArrayList<PowerUp> powerUps;
 
     private int points = 0;
+    private int counter = 0;
 
     //constructor
     public GameManager(Player player) {
         this.player = player;
         enemies = new ArrayList<Enemy>();
         lasers = new ArrayList<Laser>();
-        powerups = new ArrayList<PowerUp>();
+        powerUps = new ArrayList<PowerUp>();
     }
 
     //adds an enemy to the array list, priming it to be spawned
@@ -30,8 +31,9 @@ public class GameManager implements ActionListener {
         lasers.add(new Laser(player.getX() + 40, 860, 8, 40));
     }
 
+    //adds a power-up to the array list, priming it to be spawned in
     public void spawnPowerUp() {
-        powerups.add(new PowerUp((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90));
+        powerUps.add(new PowerUp((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90));
     }
 
     //draw game objects onto the screen
@@ -43,7 +45,7 @@ public class GameManager implements ActionListener {
         for (Laser laser : lasers) {
             laser.draw(g);
         }
-        for (PowerUp powerup : powerups) {
+        for (PowerUp powerup : powerUps) {
             powerup.draw(g);
         }
     }
@@ -56,7 +58,7 @@ public class GameManager implements ActionListener {
         for (Laser laser : lasers) {
             laser.updateLaser();
         }
-        for (PowerUp powerup : powerups) {
+        for (PowerUp powerup : powerUps) {
             powerup.updatePowerUp();
         }
 
@@ -76,7 +78,8 @@ public class GameManager implements ActionListener {
                 }
             }
         }
-        for (PowerUp powerup : powerups) {
+
+        for (PowerUp powerup : powerUps) {
             for (Laser laser : lasers) {
                 if (powerup.getCollisionBox().intersects(laser.getCollisionBox())) {
                     powerup.setActive(false);
@@ -115,9 +118,9 @@ public class GameManager implements ActionListener {
             }
         }
 
-        for (int i = powerups.size() - 1; i >= 0; i--) {
-            if (!(powerups.get(i).isActive())) {
-                powerups.remove(i);
+        for (int i = powerUps.size() - 1; i >= 0; i--) {
+            if (!(powerUps.get(i).isActive())) {
+                powerUps.remove(i);
             }
         }
     }
@@ -126,7 +129,10 @@ public class GameManager implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         spawnEnemy();
-        spawnPowerUp();
+        counter++;
+        if (counter % 10 == 0) {
+            spawnPowerUp();
+        }
     }
 
     //getters
