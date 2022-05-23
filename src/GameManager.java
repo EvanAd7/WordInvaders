@@ -125,6 +125,24 @@ public class GameManager implements ActionListener {
         }
     }
 
+    //reset the game
+    public void reset() {
+        for (int i = enemies.size() - 1; i >= 0; i--) {
+                enemies.remove(i);
+        }
+
+        for (int i = lasers.size() - 1; i >= 0; i--) {
+                lasers.remove(i);
+        }
+
+        for (int i = powerUps.size() - 1; i >= 0; i--) {
+                powerUps.remove(i);
+        }
+
+        points = 0;
+        player.setLives(3);
+    }
+
     //spawn objects at a certain rate (rate decided in UserScreen)
     @Override
     public void actionPerformed(ActionEvent e) {
