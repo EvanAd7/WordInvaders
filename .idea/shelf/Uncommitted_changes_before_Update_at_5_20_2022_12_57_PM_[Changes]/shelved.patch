@@ -1,0 +1,24 @@
+Index: src/PowerUpSpawner.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import java.awt.event.ActionEvent;\r\nimport java.awt.event.ActionListener;\r\n\r\npublic class PowerUpSpawner implements ActionListener {\r\n   GameManager\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        GameManager\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/PowerUpSpawner.java b/src/PowerUpSpawner.java
+--- a/src/PowerUpSpawner.java	
++++ b/src/PowerUpSpawner.java	
+@@ -1,11 +1,13 @@
+ import java.awt.event.ActionEvent;
+ import java.awt.event.ActionListener;
+-
++/*
+ public class PowerUpSpawner implements ActionListener {
+-   GameManager
++    GameManager
+ 
+     @Override
+     public void actionPerformed(ActionEvent e) {
+         GameManager
+     }
+ }
++*/
++
