@@ -34,7 +34,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         spawner.start();
 
         if (needImage) {
-            loadImage("space.jpg");
+            loadImage("Main/space.jpg");
         }
     }
 
