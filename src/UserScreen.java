@@ -31,7 +31,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         drawFrame.start();
 
         if (needImage) {
-            loadImage("Main/space.jpg");
+            loadImage("ImagesAndText/space.jpg");
         }
     }
 
@@ -198,6 +198,8 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
                         gameManager.shootLaser();
+                    } else {
+                        player.setLives(player.getLives() - 1);
                     }
                     wordReader.setWordTyped("");
                     wordReader.newWord();

@@ -16,7 +16,7 @@ public class PowerUp extends GameObject
         super(x, y, width, height, 0, 7);
 
         if (needImage) {
-            loadImage("powerup.png");
+            loadImage("ImagesAndText/powerup.png");
         }
     }
 
