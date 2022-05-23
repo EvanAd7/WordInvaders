@@ -19,7 +19,7 @@ public class Player extends GameObject {
         lives = 3;
 
         if (needImage) {
-            loadImage("Main/player.png");
+            loadImage("ImagesAndText/player.png");
         }
     }
 
