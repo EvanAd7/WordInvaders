@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class WordReader {
 
+
     //instance variables
     private String[] wordList = readFiveLetter();
     private String[] wordList1 = readFourLetter();
@@ -12,23 +13,19 @@ public class WordReader {
     private String wordTyped;
     private String currentWord;
 
-    //file reader to compile all five-letter words into an array
     public String[] readFiveLetter() {
-        String temp = "";
+        String temp= "";
         Scanner inFile = null;
-        ArrayList<String> words = new ArrayList<>();
-
         try {
-            inFile = new Scanner(new File("src\\ImagesAndText\\fiveLetterWords.txt"));
+            inFile = new Scanner(new File("src\\Main\\fiveLetter (2).txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
+        ArrayList<String> words = new ArrayList<>();
         while (inFile.hasNext()) {
             temp = inFile.next();
             words.add(temp);
         }
-
         inFile.close();
         return words.toArray(new String[0]);
     }
