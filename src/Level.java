@@ -13,15 +13,15 @@ public class Level extends JPanel implements ActionListener, KeyListener {
     private Player player;
     private ArrayList<Enemy> enemies;
     private ArrayList<PowerUp> powerUps;
+    private String wordTyped;
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
     }
-
+    // reads when a letter is typed and adds it to an empty string
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
@@ -31,12 +31,5 @@ public class Level extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
-    }
-    public int getTime()
-    {
-        long startTime = System.currentTimeMillis();
-        long elapsedTime = System.currentTimeMillis() - startTime;
-        long elapsedSeconds = elapsedTime / 1000;
-        return (int) elapsedSeconds % 60;
     }
 }

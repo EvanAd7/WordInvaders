@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="Fixed Repaint" />
+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="fixed powerups">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +28,8 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="29JkZBkjrphn5kGZDanawPcBhaS" />
+  <component name="ProjectId" id="29IwL4yc2Jdr0cwPglVEZQGLwwt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -31,12 +37,21 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/tobyp_8bbjnrg/IdeaProjects/WordInvaders/src&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\tobyp_8bbjnrg\IdeaProjects\WordInvaders\src" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\pinnellt3185\IdeaProjects\WordInvaders2\src" />
+      <recent name="C:\Users\tobyp_8bbjnrg\IdeaProjects\WordInvaders\src" />
+      <recent name="H:\Projects\WordInvaders\src" />
     </key>
   </component>
   <component name="RunManager">
@@ -56,48 +71,90 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="" />
-      <created>1652838631924</created>
+      <changelist id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="added background fixed movement" />
+      <created>1652813851118</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1652838631924</updated>
+      <updated>1652813851118</updated>
     </task>
-    <task id="LOCAL-00001" summary="in progress game object">
-      <created>1652840529793</created>
+    <task id="LOCAL-00001" summary="int added">
+      <created>1652814922890</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1652840529793</updated>
+      <updated>1652814922890</updated>
     </task>
-    <task id="LOCAL-00002" summary="Driver in progress">
-      <created>1652841748065</created>
+    <task id="LOCAL-00002" summary="added background fixed movement">
+      <created>1652905995778</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1652841748065</updated>
+      <updated>1652905995778</updated>
     </task>
-    <task id="LOCAL-00003" summary="trying to get movement">
-      <created>1652844020345</created>
+    <task id="LOCAL-00003" summary="enemy spawner">
+      <created>1652988307800</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1652844020345</updated>
+      <updated>1652988307800</updated>
     </task>
-    <task id="LOCAL-00004" summary="RECTANGLE DRAWN">
-      <created>1652844611413</created>
+    <task id="LOCAL-00004" summary="enemy png">
+      <created>1652988813453</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1652844611413</updated>
+      <updated>1652988813453</updated>
     </task>
-    <task id="LOCAL-00005" summary="Fixed Repaint">
-      <created>1652846702631</created>
+    <task id="LOCAL-00005" summary="lasers working">
+      <created>1652990182909</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1652846702631</updated>
+      <updated>1652990182909</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="cleaned up fonts">
+      <created>1653023930943</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1653023930944</updated>
+    </task>
+    <task id="LOCAL-00007" summary="TYPING WORKS">
+      <created>1653026577401</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1653026577401</updated>
+    </task>
+    <task id="LOCAL-00008" summary="powerups">
+      <created>1653074647960</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1653074647960</updated>
+    </task>
+    <task id="LOCAL-00009" summary="powerups">
+      <created>1653074726712</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1653074726712</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fixed powerups">
+      <created>1653076524380</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1653076524380</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed powerups">
+      <created>1653076638076</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1653076638076</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -112,11 +169,20 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="in progress game object" />
-    <MESSAGE value="Driver in progress" />
-    <MESSAGE value="trying to get movement" />
-    <MESSAGE value="RECTANGLE DRAWN" />
-    <MESSAGE value="Fixed Repaint" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Repaint" />
+    <MESSAGE value="int added" />
+    <MESSAGE value="Added Classes" />
+    <MESSAGE value="added background fixed movement" />
+    <MESSAGE value="enemy spawner" />
+    <MESSAGE value="enemy png" />
+    <MESSAGE value="lasers working" />
+    <MESSAGE value="cleaned up fonts" />
+    <MESSAGE value="TYPING WORKS" />
+    <MESSAGE value="powerups" />
+    <MESSAGE value="fixed powerups" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed powerups" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
