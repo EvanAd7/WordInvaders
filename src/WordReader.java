@@ -5,64 +5,12 @@ import java.util.Scanner;
 
 public class WordReader {
 
-
     //instance variables
-    private String[] wordList = readFiveLetter();
-    private String[] wordList1 = readFourLetter();
-    private String[] wordList2 = readSixLetter();
+    private String[] wordList1 = readFourLetterWords();
+    private String[] wordList = readFiveLetterWords();
+    private String[] wordList2 = readSixLetterWords();
     private String wordTyped;
     private String currentWord;
-
-    public String[] readFiveLetter() {
-        String temp= "";
-        Scanner inFile = null;
-        try {
-            inFile = new Scanner(new File("src\\Main\\fiveLetter (2).txt"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayList<String> words = new ArrayList<>();
-        while (inFile.hasNext()) {
-            temp = inFile.next();
-            words.add(temp);
-        }
-        inFile.close();
-        return words.toArray(new String[0]);
-    }
-
-    public String[] readFourLetter() {
-        String temp= "";
-        Scanner inFile = null;
-        try {
-            inFile = new Scanner(new File("src\\Main\\fourLetter.txt"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayList<String> words = new ArrayList<>();
-        while (inFile.hasNext()) {
-            temp = inFile.next();
-            words.add(temp);
-        }
-        inFile.close();
-        return words.toArray(new String[0]);
-    }
-
-    public String[] readSixLetter() {
-        String temp= "";
-        Scanner inFile = null;
-        try {
-            inFile = new Scanner(new File("src\\Main\\sixLetter.txt"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ArrayList<String> words = new ArrayList<>();
-        while (inFile.hasNext()) {
-            temp = inFile.next();
-            words.add(temp);
-        }
-        inFile.close();
-        return words.toArray(new String[0]);
-    }
 
     //constructor
     public WordReader() {
@@ -83,6 +31,69 @@ public class WordReader {
     //generate a new word to type
     public void newWord() {
         currentWord = wordList[(int) (Math.random() * wordList.length)];
+    }
+
+    //file reader to compile four-letter words into an array
+    public String[] readFourLetterWords() {
+        String temp = "";
+        Scanner inFile = null;
+        ArrayList<String> words = new ArrayList<>();
+
+        try {
+            inFile = new Scanner(new File("src\\ImagesAndText\\fourLetter.txt"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        while (inFile.hasNext()) {
+            temp = inFile.next();
+            words.add(temp);
+        }
+
+        inFile.close();
+        return words.toArray(new String[0]);
+    }
+
+    //file reader to compile five-letter words into an array
+    public String[] readFiveLetterWords() {
+        String temp = "";
+        Scanner inFile = null;
+        ArrayList<String> words = new ArrayList<>();
+
+        try {
+            inFile = new Scanner(new File("src\\ImagesAndText\\fiveLetter.txt"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        while (inFile.hasNext()) {
+            temp = inFile.next();
+            words.add(temp);
+        }
+
+        inFile.close();
+        return words.toArray(new String[0]);
+    }
+
+    //file reader to compile six-letter words into an array
+    public String[] readSixLetterWords() {
+        String temp = "";
+        Scanner inFile = null;
+        ArrayList<String> words = new ArrayList<>();
+
+        try {
+            inFile = new Scanner(new File("src\\ImagesAndText\\sixLetter.txt"));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        while (inFile.hasNext()) {
+            temp = inFile.next();
+            words.add(temp);
+        }
+
+        inFile.close();
+        return words.toArray(new String[0]);
     }
 
     //getters
