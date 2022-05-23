@@ -15,7 +15,7 @@ public class Laser extends GameObject {
         super(x, y, width, height, 0, 10);
 
         if (needImage) {
-            loadImage("laser.png");
+            loadImage("Main/laser.png");
         }
     }
 
