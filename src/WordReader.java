@@ -17,7 +17,7 @@ public class WordReader {
         String temp= "";
         Scanner inFile = null;
         try {
-            inFile = new Scanner(new File("src\\Main\\fiveLetter (2).txt"));
+            inFile = new Scanner(new File("src\\ImagesAndText\\fiveLetterWords.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -34,7 +34,7 @@ public class WordReader {
         String temp= "";
         Scanner inFile = null;
         try {
-            inFile = new Scanner(new File("src\\Main\\fourLetter.txt"));
+            inFile = new Scanner(new File("src\\ImagesAndText\\fourLetter.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +51,7 @@ public class WordReader {
         String temp= "";
         Scanner inFile = null;
         try {
-            inFile = new Scanner(new File("src\\Main\\sixLetter.txt"));
+            inFile = new Scanner(new File("src\\ImagesAndText\\sixLetter.txt"));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
