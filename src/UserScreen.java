@@ -28,7 +28,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //constructor
     public UserScreen() {
         player = new Player(500, 860, 90, 90);
-        //wordReader = new WordReader();
 
         level1Manager = new Level1Manager(player);
         level2Manager = new Level2Manager(player);
@@ -52,8 +51,12 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
 
         g.setColor(Color.WHITE);
-        g.drawString("WORD INVADERS", 400, 300);
-        g.drawString("Press SPACE to begin!", 400, 500);
+        g.drawString("WORD INVADERS", 350, 150);
+        g.drawString("Press key: 1, 2, 3, 4 for respective levels", 200, 250);
+        g.drawString("Level 1: Easy", 350, 400);
+        g.drawString("Level 2: Medium", 350, 450);
+        g.drawString("Level 3: Hard", 350, 500);
+        g.drawString("Level 4: IMPOSSIBLE", 350, 550);
     }
 
     //draws the game-over screen
@@ -64,8 +67,8 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
 
         g.setColor(Color.BLACK);
-        g.drawString("GAME OVER!", 400, 300);
-        g.drawString("Press SPACE to return to menu!", 400, 500);
+        g.drawString("GAME OVER!", 350, 200);
+        g.drawString("Press SPACE to return to menu!", 200, 600);
     }
 
     //paint the screen (JPanel) with active objects
@@ -128,57 +131,57 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //draws the level 2 screen
     public void drawLevel2Screen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        level1Manager.drawObjects(g);
+        level2Manager.drawObjects(g);
         drawText(g);
     }
 
     //updates level 2 objects at a certain rate
     public void updateLevel2Screen() {
         player.updatePlayer();
-        level1Manager.updateObjects();
+        level2Manager.updateObjects();
 
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level1Manager.reset();
+            level2Manager.reset();
         }
     }
 
     //draws the level 3 screen
     public void drawLevel3Screen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        level1Manager.drawObjects(g);
+        level3Manager.drawObjects(g);
         drawText(g);
     }
 
     //updates level 3 objects at a certain rate
     public void updateLevel3Screen() {
         player.updatePlayer();
-        level1Manager.updateObjects();
+        level3Manager.updateObjects();
 
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level1Manager.reset();
+            level3Manager.reset();
         }
     }
 
     //draws the level 4 screen
     public void drawLevel4Screen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        level1Manager.drawObjects(g);
+        level4Manager.drawObjects(g);
         drawText(g);
     }
 
     //updates level 4 objects at a certain rate
     public void updateLevel4Screen() {
         player.updatePlayer();
-        level1Manager.updateObjects();
+        level4Manager.updateObjects();
 
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level1Manager.reset();
+            level4Manager.reset();
         }
     }
 
@@ -223,17 +226,17 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 } else if (e.getKeyCode() == KeyEvent.VK_2) {
                     status = Status.LEVEL2;
                     wordReader = new WordReader(5);
-                    spawner = new Timer(3000, level1Manager);
+                    spawner = new Timer(3000, level2Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_3) {
                     status = Status.LEVEL3;
                     wordReader = new WordReader(6);
-                    spawner = new Timer(2000, level1Manager);
+                    spawner = new Timer(2000, level3Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_4) {
                     status = Status.LEVEL4;
                     wordReader = new WordReader(6);
-                    spawner = new Timer(1000, level1Manager);
+                    spawner = new Timer(1000, level4Manager);
                     spawner.start();
                 }
                 break;
@@ -557,7 +560,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     }
 
     //image loading method
-    void loadImage(String imageFile) {
+    private void loadImage(String imageFile) {
         if (needImage) {
             try {
                 image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
