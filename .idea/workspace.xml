@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="cleaned up code">
-      <change afterPath="$PROJECT_DIR$/src/Level1Manager.java" afterDir="false" />
+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="classes for each level">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_10_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_10_PM__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_24_2022_12_05_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_24_2022_12_05_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameManager2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level2Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameManager3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level3Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameManager4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level4Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Level.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WordReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WordReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Level3Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level3Manager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -9,9 +9,10 @@ public class Level3Manager implements ActionListener {
     private ArrayList<Enemy> enemies;
     private ArrayList<Laser> lasers;
     private ArrayList<PowerUp> powerUps;
-
+    private boolean invincible;
     private int points = 0;
     private int counter = 0;
+    private int powerUpReset = 0;
 
     //constructor
     public Level3Manager(Player player) {
@@ -19,6 +20,7 @@ public class Level3Manager implements ActionListener {
         enemies = new ArrayList<Enemy>();
         lasers = new ArrayList<Laser>();
         powerUps = new ArrayList<PowerUp>();
+        invincible = false;
     }
 
     //adds an enemy to the array list, priming it to be spawned
@@ -84,7 +86,7 @@ public class Level3Manager implements ActionListener {
                 if (powerup.getCollisionBox().intersects(laser.getCollisionBox())) {
                     powerup.setActive(false);
                     laser.setActive(false);
-                    points += 500;
+                    invincible = true;
                 }
             }
         }
@@ -93,14 +95,15 @@ public class Level3Manager implements ActionListener {
     //checks if the player has lost a life or lost the game
     public void lifeLoss() {
         for (Enemy enemy : enemies) {
-            if (enemy.getY() > player.getY()) {
-                enemy.setActive(false);
-                player.setLives(player.getLives()-1);
+            if (!invincible) {
+                if (enemy.getY() > player.getY()) {
+                    enemy.setActive(false);
+                    player.setLives(player.getLives() - 1);
+                }
+                if (player.getLives() == 0) {
+                    player.setActive(false);
+                }
             }
-        }
-
-        if (player.getLives() == 0) {
-            player.setActive(false);
         }
     }
 
@@ -148,8 +151,12 @@ public class Level3Manager implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         spawnEnemy();
         counter++;
+        powerUpReset++;
         if (counter % 10 == 0) {
             spawnPowerUp();
+        }
+        if (invincible) {
+
         }
     }
 
