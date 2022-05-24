@@ -128,57 +128,57 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //draws the level 2 screen
     public void drawLevel2Screen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        level1Manager.drawObjects(g);
+        level2Manager.drawObjects(g);
         drawText(g);
     }
 
     //updates level 2 objects at a certain rate
     public void updateLevel2Screen() {
         player.updatePlayer();
-        level1Manager.updateObjects();
+        level2Manager.updateObjects();
 
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level1Manager.reset();
+            level2Manager.reset();
         }
     }
 
     //draws the level 3 screen
     public void drawLevel3Screen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        level1Manager.drawObjects(g);
+        level3Manager.drawObjects(g);
         drawText(g);
     }
 
     //updates level 3 objects at a certain rate
     public void updateLevel3Screen() {
         player.updatePlayer();
-        level1Manager.updateObjects();
+        level3Manager.updateObjects();
 
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level1Manager.reset();
+            level3Manager.reset();
         }
     }
 
     //draws the level 4 screen
     public void drawLevel4Screen(Graphics g) {
         g.drawImage(image, 0, 0, null);
-        level1Manager.drawObjects(g);
+        level4Manager.drawObjects(g);
         drawText(g);
     }
 
     //updates level 4 objects at a certain rate
     public void updateLevel4Screen() {
         player.updatePlayer();
-        level1Manager.updateObjects();
+        level4Manager.updateObjects();
 
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level1Manager.reset();
+            level4Manager.reset();
         }
     }
 
@@ -223,17 +223,17 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 } else if (e.getKeyCode() == KeyEvent.VK_2) {
                     status = Status.LEVEL2;
                     wordReader = new WordReader(5);
-                    spawner = new Timer(3000, level1Manager);
+                    spawner = new Timer(3000, level2Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_3) {
                     status = Status.LEVEL3;
                     wordReader = new WordReader(6);
-                    spawner = new Timer(2000, level1Manager);
+                    spawner = new Timer(2000, level3Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_4) {
                     status = Status.LEVEL4;
                     wordReader = new WordReader(6);
-                    spawner = new Timer(1000, level1Manager);
+                    spawner = new Timer(1000, level4Manager);
                     spawner.start();
                 }
                 break;
