@@ -156,7 +156,6 @@ public class Level3Manager implements ActionListener {
             spawnPowerUp();
         }
         if (invincible) {
-
         }
     }
 
