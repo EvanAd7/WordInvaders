@@ -28,7 +28,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //constructor
     public UserScreen() {
         player = new Player(500, 860, 90, 90);
-        //wordReader = new WordReader();
 
         level1Manager = new Level1Manager(player);
         level2Manager = new Level2Manager(player);
@@ -52,8 +51,12 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
 
         g.setColor(Color.WHITE);
-        g.drawString("WORD INVADERS", 400, 300);
-        g.drawString("Press SPACE to begin!", 400, 500);
+        g.drawString("WORD INVADERS", 350, 150);
+        g.drawString("Press key: 1, 2, 3, 4 for respective levels", 200, 250);
+        g.drawString("Level 1: Easy", 350, 400);
+        g.drawString("Level 2: Medium", 350, 450);
+        g.drawString("Level 3: Hard", 350, 500);
+        g.drawString("Level 4: IMPOSSIBLE", 350, 550);
     }
 
     //draws the game-over screen
@@ -64,8 +67,8 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
 
         g.setColor(Color.BLACK);
-        g.drawString("GAME OVER!", 400, 300);
-        g.drawString("Press SPACE to return to menu!", 400, 500);
+        g.drawString("GAME OVER!", 350, 200);
+        g.drawString("Press SPACE to return to menu!", 200, 600);
     }
 
     //paint the screen (JPanel) with active objects
@@ -557,7 +560,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     }
 
     //image loading method
-    void loadImage(String imageFile) {
+    private void loadImage(String imageFile) {
         if (needImage) {
             try {
                 image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));

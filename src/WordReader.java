@@ -35,7 +35,9 @@ public class WordReader {
 
     //user typed "backspace" method
     public void backspace() {
-        wordTyped = wordTyped.substring(0, wordTyped.length() - 1);
+        if (wordTyped.length() > 0) {
+            wordTyped = wordTyped.substring(0, wordTyped.length() - 1);
+        }
     }
 
     //generate a new word to type

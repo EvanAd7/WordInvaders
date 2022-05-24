@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="separate levels">
+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="fixed">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Level4Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level4Manager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/WordReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WordReader.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653420841395</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="fixed">
+      <created>1653421197161</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1653421197161</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -218,7 +228,8 @@
     <MESSAGE value="four and six letter" />
     <MESSAGE value="four and six letter fixed" />
     <MESSAGE value="separate levels" />
-    <option name="LAST_COMMIT_MESSAGE" value="separate levels" />
+    <MESSAGE value="fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

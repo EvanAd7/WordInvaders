@@ -13,6 +13,9 @@ public class Level4Manager implements ActionListener {
     private int points = 0;
     private int counter = 0;
 
+    private int timeCounter = 0;
+    private boolean hasPower = false;
+
     //constructor
     public Level4Manager(Player player) {
         this.player = player;
@@ -29,6 +32,13 @@ public class Level4Manager implements ActionListener {
     //adds a new laser to the array list
     public void shootLaser() {
         lasers.add(new Laser(player.getX() + 40, 860, 8, 40));
+    }
+
+    //method for shooting 3 lasers at once
+    public void shoot3Lasers() {
+        lasers.add(new Laser(player.getX() - 10, 860, 8, 40));
+        lasers.add(new Laser(player.getX() + 40, 860, 8, 40));
+        lasers.add(new Laser(player.getX() + 90, 860, 8, 40));
     }
 
     //adds a power-up to the array list, priming it to be spawned in
@@ -84,7 +94,7 @@ public class Level4Manager implements ActionListener {
                 if (powerup.getCollisionBox().intersects(laser.getCollisionBox())) {
                     powerup.setActive(false);
                     laser.setActive(false);
-                    points += 500;
+                    hasPower = true;
                 }
             }
         }
@@ -150,6 +160,13 @@ public class Level4Manager implements ActionListener {
         counter++;
         if (counter % 10 == 0) {
             spawnPowerUp();
+        }
+
+        if (hasPower) {
+            timeCounter++;
+        }
+        if (timeCounter % 10 == 0) {
+            hasPower = false;
         }
     }
 
