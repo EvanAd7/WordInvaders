@@ -2,7 +2,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GameManager2 implements ActionListener {
+public class Level4Manager implements ActionListener {
 
     //instance variables
     private Player player;
@@ -14,7 +14,7 @@ public class GameManager2 implements ActionListener {
     private int counter = 0;
 
     //constructor
-    public GameManager2(Player player) {
+    public Level4Manager(Player player) {
         this.player = player;
         enemies = new ArrayList<Enemy>();
         lasers = new ArrayList<Laser>();

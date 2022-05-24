@@ -6,14 +6,24 @@ import java.util.Scanner;
 public class WordReader {
 
     //instance variables
+    /*
     private String[] wordList1 = readFourLetterWords();
     private String[] wordList = readFiveLetterWords();
     private String[] wordList2 = readSixLetterWords();
+     */
+    private String[] wordList;
     private String wordTyped;
     private String currentWord;
 
     //constructor
-    public WordReader() {
+    public WordReader(int letters) {
+        if (letters == 4) {
+            wordList = readFourLetterWords();
+        } else if (letters == 5) {
+            wordList = readFiveLetterWords();
+        } else if (letters == 6) {
+            wordList = readSixLetterWords();
+        }
         wordTyped = "";
         newWord();
     }
