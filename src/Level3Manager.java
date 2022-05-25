@@ -2,7 +2,6 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class Level3Manager implements ActionListener {
 
     //instance variables
