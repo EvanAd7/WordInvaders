@@ -102,9 +102,9 @@ public class Level3Manager implements ActionListener {
                     player.setLives(player.getLives() - 1);
                 }
             }
-            if (player.getLives() <= 0) {
-                player.setActive(false);
-            }
+        }
+        if (player.getLives() <= 0) {
+            player.setActive(false);
         }
     }
 
@@ -157,9 +157,9 @@ public class Level3Manager implements ActionListener {
         }
         if (invincible) {
             powerUpReset++;
-            if ((powerUpReset % 5 == 0) && powerUpReset != 0) {
-                invincible = false;
-            }
+        }
+        if ((powerUpReset % 5 == 0) && powerUpReset != 0) {
+            invincible = false;
         }
     }
 
