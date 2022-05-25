@@ -95,7 +95,7 @@ public class Level1Manager implements ActionListener {
         for (Enemy enemy : enemies) {
             if (enemy.getY() > player.getY()) {
                 enemy.setActive(false);
-                player.setLives(player.getLives()-1);
+                player.setLives(player.getLives() - 1);
             }
         }
 

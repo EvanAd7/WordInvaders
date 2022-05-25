@@ -3,8 +3,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.util.Objects;
 
-public class PowerUp extends GameObject
-{
+public class PowerUp extends GameObject {
 
     //image loading variables
     public static BufferedImage image;
@@ -13,7 +12,7 @@ public class PowerUp extends GameObject
 
     //constructor
     public PowerUp(int x, int y, int width, int height) {
-        super(x, y, width, height, 0, 7);
+        super(x, y, width, height, 0, 6);
 
         if (needImage) {
             loadImage("ImagesAndText/powerup.png");

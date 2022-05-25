@@ -28,7 +28,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //constructor
     public UserScreen() {
         player = new Player(500, 860, 90, 90);
-        //wordReader = new WordReader();
 
         level1Manager = new Level1Manager(player);
         level2Manager = new Level2Manager(player);
@@ -52,8 +51,40 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
 
         g.setColor(Color.WHITE);
-        g.drawString("WORD INVADERS", 400, 300);
-        g.drawString("Press SPACE to begin!", 400, 500);
+        g.drawString("WORD INVADERS", 350, 150);
+        g.drawString("Press key: 1, 2, 3, 4 for respective levels", 200, 250);
+        g.drawString("Level 1: Easy", 350, 400);
+        g.drawString("Level 2: Medium", 350, 450);
+        g.drawString("Level 3: Hard", 350, 500);
+        g.drawString("Level 4: IMPOSSIBLE", 350, 550);
+        g.drawString("Press SPACE for instructions", 280, 700);
+    }
+
+    //draws the instructions screen
+    public void drawInstructionsScreen(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.drawString("How to play WORD INVADERS:", 250, 100);
+
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
+        g.drawString("Word Invaders is an outer-space themed game designed to improve your typing skills. ", 100, 200);
+        g.drawString("The objective of the game is to obtain as many points as you can on each level, ", 100, 230);
+        g.drawString("while simultaneously becoming a better typist. Use left and right arrow keys ", 100, 260);
+        g.drawString("to position your spaceship beneath an enemy spacecraft, and correctly type in ", 100, 290);
+        g.drawString("the word at the top of your screen, then press enter to fire a laser. If the ", 100, 320);
+        g.drawString("laser collides with an enemy, you gain points and the enemy is destroyed. If ", 100, 350);
+        g.drawString("the word is incorrectly typed, you will lose a life and a laser-beam will not fire. ", 100, 380);
+        g.drawString("Additionally, if an enemy is allowed to reach the bottom of your screen, you ", 100, 410);
+        g.drawString("will lose a life. Lose all of your lives, and it's game over! Each level is ", 100, 440);
+        g.drawString("a certain difficulty; in harder levels the enemies spawn faster and the words ", 100, 470);
+        g.drawString("that you must type are longer. Each level also has it's own power-ups, which ", 100, 500);
+        g.drawString("provide boosts such as temporary invincibility. Good luck and happy typing!", 100, 530);
+
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.drawString("Press SPACE to return to menu", 250, 700);
     }
 
     //draws the game-over screen
@@ -61,11 +92,11 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.RED);
         g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.setFont(new Font("Arial", Font.PLAIN, 50));
 
         g.setColor(Color.BLACK);
-        g.drawString("GAME OVER!", 400, 300);
-        g.drawString("Press SPACE to return to menu!", 400, 500);
+        g.drawString("GAME OVER!", 350, 200);
+        g.drawString("Press SPACE to return to menu!", 170, 400);
     }
 
     //paint the screen (JPanel) with active objects
@@ -74,6 +105,9 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         switch (status) {
             case MENU:
                 drawMenuScreen(g);
+                break;
+            case INSTRUCTIONS:
+                drawInstructionsScreen(g);
                 break;
             case LEVEL1:
                 drawLevel1Screen(g);
@@ -98,7 +132,20 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 30));
 
         g.setColor(Color.GREEN);
-        g.drawString("Score: " + level1Manager.getPoints(), 10, 30);
+        switch (status) {
+            case LEVEL1:
+                g.drawString("Score: " + level1Manager.getPoints(), 10, 30);
+                break;
+            case LEVEL2:
+                g.drawString("Score: " + level2Manager.getPoints(), 10, 30);
+                break;
+            case LEVEL3:
+                g.drawString("Score: " + level3Manager.getPoints(), 10, 30);
+                break;
+            case LEVEL4:
+                g.drawString("Score: " + level4Manager.getPoints(), 10, 30);
+                break;
+        }
         g.drawString("Type: " + wordReader.getCurrentWord(), 415, 30);
         g.drawString("Lives: " + player.getLives(), 870, 30);
 
@@ -212,6 +259,72 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     //reads when the user presses a key and translates into code
     @Override
     public void keyPressed(KeyEvent e) {
+        if (status == Status.LEVEL1 || status == Status.LEVEL2 || status == Status.LEVEL3 || status == Status.LEVEL4) {
+            //player movement controllers
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                player.moveLeft();
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                player.moveRight();
+            }
+
+            //check what the user is typing
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                wordReader.addLetter("a");
+            } else if (e.getKeyCode() == KeyEvent.VK_B) {
+                wordReader.addLetter("b");
+            } else if (e.getKeyCode() == KeyEvent.VK_C) {
+                wordReader.addLetter("c");
+            } else if (e.getKeyCode() == KeyEvent.VK_D) {
+                wordReader.addLetter("d");
+            } else if (e.getKeyCode() == KeyEvent.VK_E) {
+                wordReader.addLetter("e");
+            } else if (e.getKeyCode() == KeyEvent.VK_F) {
+                wordReader.addLetter("f");
+            } else if (e.getKeyCode() == KeyEvent.VK_G) {
+                wordReader.addLetter("g");
+            } else if (e.getKeyCode() == KeyEvent.VK_H) {
+                wordReader.addLetter("h");
+            } else if (e.getKeyCode() == KeyEvent.VK_I) {
+                wordReader.addLetter("i");
+            } else if (e.getKeyCode() == KeyEvent.VK_J) {
+                wordReader.addLetter("j");
+            } else if (e.getKeyCode() == KeyEvent.VK_K) {
+                wordReader.addLetter("k");
+            } else if (e.getKeyCode() == KeyEvent.VK_L) {
+                wordReader.addLetter("l");
+            } else if (e.getKeyCode() == KeyEvent.VK_M) {
+                wordReader.addLetter("m");
+            } else if (e.getKeyCode() == KeyEvent.VK_N) {
+                wordReader.addLetter("n");
+            } else if (e.getKeyCode() == KeyEvent.VK_O) {
+                wordReader.addLetter("o");
+            } else if (e.getKeyCode() == KeyEvent.VK_P) {
+                wordReader.addLetter("p");
+            } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+                wordReader.addLetter("q");
+            } else if (e.getKeyCode() == KeyEvent.VK_R) {
+                wordReader.addLetter("r");
+            } else if (e.getKeyCode() == KeyEvent.VK_S) {
+                wordReader.addLetter("s");
+            } else if (e.getKeyCode() == KeyEvent.VK_T) {
+                wordReader.addLetter("t");
+            } else if (e.getKeyCode() == KeyEvent.VK_U) {
+                wordReader.addLetter("u");
+            } else if (e.getKeyCode() == KeyEvent.VK_V) {
+                wordReader.addLetter("v");
+            } else if (e.getKeyCode() == KeyEvent.VK_W) {
+                wordReader.addLetter("w");
+            } else if (e.getKeyCode() == KeyEvent.VK_X) {
+                wordReader.addLetter("x");
+            } else if (e.getKeyCode() == KeyEvent.VK_Y) {
+                wordReader.addLetter("y");
+            } else if (e.getKeyCode() == KeyEvent.VK_Z) {
+                wordReader.addLetter("z");
+            } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                wordReader.backspace();
+            }
+        }
+
         //check what game state we are in
         switch (status) {
             case MENU:
@@ -236,72 +349,16 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                     spawner = new Timer(1000, level4Manager);
                     spawner.start();
                 }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    status = Status.INSTRUCTIONS;
+                }
+                break;
+            case INSTRUCTIONS:
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    status = Status.MENU;
+                }
                 break;
             case LEVEL1:
-                //player movement controllers
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    player.moveLeft();
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    player.moveRight();
-                }
-
-                //check what the user is typing
-                if (e.getKeyCode() == KeyEvent.VK_A) {
-                    wordReader.addLetter("a");
-                } else if (e.getKeyCode() == KeyEvent.VK_B) {
-                    wordReader.addLetter("b");
-                } else if (e.getKeyCode() == KeyEvent.VK_C) {
-                    wordReader.addLetter("c");
-                } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                    wordReader.addLetter("d");
-                } else if (e.getKeyCode() == KeyEvent.VK_E) {
-                    wordReader.addLetter("e");
-                } else if (e.getKeyCode() == KeyEvent.VK_F) {
-                    wordReader.addLetter("f");
-                } else if (e.getKeyCode() == KeyEvent.VK_G) {
-                    wordReader.addLetter("g");
-                } else if (e.getKeyCode() == KeyEvent.VK_H) {
-                    wordReader.addLetter("h");
-                } else if (e.getKeyCode() == KeyEvent.VK_I) {
-                    wordReader.addLetter("i");
-                } else if (e.getKeyCode() == KeyEvent.VK_J) {
-                    wordReader.addLetter("j");
-                } else if (e.getKeyCode() == KeyEvent.VK_K) {
-                    wordReader.addLetter("k");
-                } else if (e.getKeyCode() == KeyEvent.VK_L) {
-                    wordReader.addLetter("l");
-                } else if (e.getKeyCode() == KeyEvent.VK_M) {
-                    wordReader.addLetter("m");
-                } else if (e.getKeyCode() == KeyEvent.VK_N) {
-                    wordReader.addLetter("n");
-                } else if (e.getKeyCode() == KeyEvent.VK_O) {
-                    wordReader.addLetter("o");
-                } else if (e.getKeyCode() == KeyEvent.VK_P) {
-                    wordReader.addLetter("p");
-                } else if (e.getKeyCode() == KeyEvent.VK_Q) {
-                    wordReader.addLetter("q");
-                } else if (e.getKeyCode() == KeyEvent.VK_R) {
-                    wordReader.addLetter("r");
-                } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                    wordReader.addLetter("s");
-                } else if (e.getKeyCode() == KeyEvent.VK_T) {
-                    wordReader.addLetter("t");
-                } else if (e.getKeyCode() == KeyEvent.VK_U) {
-                    wordReader.addLetter("u");
-                } else if (e.getKeyCode() == KeyEvent.VK_V) {
-                    wordReader.addLetter("v");
-                } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                    wordReader.addLetter("w");
-                } else if (e.getKeyCode() == KeyEvent.VK_X) {
-                    wordReader.addLetter("x");
-                } else if (e.getKeyCode() == KeyEvent.VK_Y) {
-                    wordReader.addLetter("y");
-                } else if (e.getKeyCode() == KeyEvent.VK_Z) {
-                    wordReader.addLetter("z");
-                } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                    wordReader.backspace();
-                }
-
                 //if the user has typed the correct word, fire laser
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
@@ -314,70 +371,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 }
                 break;
             case LEVEL2:
-                //player movement controllers
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    player.moveLeft();
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    player.moveRight();
-                }
-
-                //check what the user is typing
-                if (e.getKeyCode() == KeyEvent.VK_A) {
-                    wordReader.addLetter("a");
-                } else if (e.getKeyCode() == KeyEvent.VK_B) {
-                    wordReader.addLetter("b");
-                } else if (e.getKeyCode() == KeyEvent.VK_C) {
-                    wordReader.addLetter("c");
-                } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                    wordReader.addLetter("d");
-                } else if (e.getKeyCode() == KeyEvent.VK_E) {
-                    wordReader.addLetter("e");
-                } else if (e.getKeyCode() == KeyEvent.VK_F) {
-                    wordReader.addLetter("f");
-                } else if (e.getKeyCode() == KeyEvent.VK_G) {
-                    wordReader.addLetter("g");
-                } else if (e.getKeyCode() == KeyEvent.VK_H) {
-                    wordReader.addLetter("h");
-                } else if (e.getKeyCode() == KeyEvent.VK_I) {
-                    wordReader.addLetter("i");
-                } else if (e.getKeyCode() == KeyEvent.VK_J) {
-                    wordReader.addLetter("j");
-                } else if (e.getKeyCode() == KeyEvent.VK_K) {
-                    wordReader.addLetter("k");
-                } else if (e.getKeyCode() == KeyEvent.VK_L) {
-                    wordReader.addLetter("l");
-                } else if (e.getKeyCode() == KeyEvent.VK_M) {
-                    wordReader.addLetter("m");
-                } else if (e.getKeyCode() == KeyEvent.VK_N) {
-                    wordReader.addLetter("n");
-                } else if (e.getKeyCode() == KeyEvent.VK_O) {
-                    wordReader.addLetter("o");
-                } else if (e.getKeyCode() == KeyEvent.VK_P) {
-                    wordReader.addLetter("p");
-                } else if (e.getKeyCode() == KeyEvent.VK_Q) {
-                    wordReader.addLetter("q");
-                } else if (e.getKeyCode() == KeyEvent.VK_R) {
-                    wordReader.addLetter("r");
-                } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                    wordReader.addLetter("s");
-                } else if (e.getKeyCode() == KeyEvent.VK_T) {
-                    wordReader.addLetter("t");
-                } else if (e.getKeyCode() == KeyEvent.VK_U) {
-                    wordReader.addLetter("u");
-                } else if (e.getKeyCode() == KeyEvent.VK_V) {
-                    wordReader.addLetter("v");
-                } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                    wordReader.addLetter("w");
-                } else if (e.getKeyCode() == KeyEvent.VK_X) {
-                    wordReader.addLetter("x");
-                } else if (e.getKeyCode() == KeyEvent.VK_Y) {
-                    wordReader.addLetter("y");
-                } else if (e.getKeyCode() == KeyEvent.VK_Z) {
-                    wordReader.addLetter("z");
-                } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                    wordReader.backspace();
-                }
-
                 //if the user has typed the correct word, fire laser
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
@@ -390,70 +383,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 }
                 break;
             case LEVEL3:
-                //player movement controllers
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    player.moveLeft();
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    player.moveRight();
-                }
-
-                //check what the user is typing
-                if (e.getKeyCode() == KeyEvent.VK_A) {
-                    wordReader.addLetter("a");
-                } else if (e.getKeyCode() == KeyEvent.VK_B) {
-                    wordReader.addLetter("b");
-                } else if (e.getKeyCode() == KeyEvent.VK_C) {
-                    wordReader.addLetter("c");
-                } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                    wordReader.addLetter("d");
-                } else if (e.getKeyCode() == KeyEvent.VK_E) {
-                    wordReader.addLetter("e");
-                } else if (e.getKeyCode() == KeyEvent.VK_F) {
-                    wordReader.addLetter("f");
-                } else if (e.getKeyCode() == KeyEvent.VK_G) {
-                    wordReader.addLetter("g");
-                } else if (e.getKeyCode() == KeyEvent.VK_H) {
-                    wordReader.addLetter("h");
-                } else if (e.getKeyCode() == KeyEvent.VK_I) {
-                    wordReader.addLetter("i");
-                } else if (e.getKeyCode() == KeyEvent.VK_J) {
-                    wordReader.addLetter("j");
-                } else if (e.getKeyCode() == KeyEvent.VK_K) {
-                    wordReader.addLetter("k");
-                } else if (e.getKeyCode() == KeyEvent.VK_L) {
-                    wordReader.addLetter("l");
-                } else if (e.getKeyCode() == KeyEvent.VK_M) {
-                    wordReader.addLetter("m");
-                } else if (e.getKeyCode() == KeyEvent.VK_N) {
-                    wordReader.addLetter("n");
-                } else if (e.getKeyCode() == KeyEvent.VK_O) {
-                    wordReader.addLetter("o");
-                } else if (e.getKeyCode() == KeyEvent.VK_P) {
-                    wordReader.addLetter("p");
-                } else if (e.getKeyCode() == KeyEvent.VK_Q) {
-                    wordReader.addLetter("q");
-                } else if (e.getKeyCode() == KeyEvent.VK_R) {
-                    wordReader.addLetter("r");
-                } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                    wordReader.addLetter("s");
-                } else if (e.getKeyCode() == KeyEvent.VK_T) {
-                    wordReader.addLetter("t");
-                } else if (e.getKeyCode() == KeyEvent.VK_U) {
-                    wordReader.addLetter("u");
-                } else if (e.getKeyCode() == KeyEvent.VK_V) {
-                    wordReader.addLetter("v");
-                } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                    wordReader.addLetter("w");
-                } else if (e.getKeyCode() == KeyEvent.VK_X) {
-                    wordReader.addLetter("x");
-                } else if (e.getKeyCode() == KeyEvent.VK_Y) {
-                    wordReader.addLetter("y");
-                } else if (e.getKeyCode() == KeyEvent.VK_Z) {
-                    wordReader.addLetter("z");
-                } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                    wordReader.backspace();
-                }
-
                 //if the user has typed the correct word, fire laser
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
@@ -466,74 +395,14 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 }
                 break;
             case LEVEL4:
-                //player movement controllers
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    player.moveLeft();
-                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    player.moveRight();
-                }
-
-                //check what the user is typing
-                if (e.getKeyCode() == KeyEvent.VK_A) {
-                    wordReader.addLetter("a");
-                } else if (e.getKeyCode() == KeyEvent.VK_B) {
-                    wordReader.addLetter("b");
-                } else if (e.getKeyCode() == KeyEvent.VK_C) {
-                    wordReader.addLetter("c");
-                } else if (e.getKeyCode() == KeyEvent.VK_D) {
-                    wordReader.addLetter("d");
-                } else if (e.getKeyCode() == KeyEvent.VK_E) {
-                    wordReader.addLetter("e");
-                } else if (e.getKeyCode() == KeyEvent.VK_F) {
-                    wordReader.addLetter("f");
-                } else if (e.getKeyCode() == KeyEvent.VK_G) {
-                    wordReader.addLetter("g");
-                } else if (e.getKeyCode() == KeyEvent.VK_H) {
-                    wordReader.addLetter("h");
-                } else if (e.getKeyCode() == KeyEvent.VK_I) {
-                    wordReader.addLetter("i");
-                } else if (e.getKeyCode() == KeyEvent.VK_J) {
-                    wordReader.addLetter("j");
-                } else if (e.getKeyCode() == KeyEvent.VK_K) {
-                    wordReader.addLetter("k");
-                } else if (e.getKeyCode() == KeyEvent.VK_L) {
-                    wordReader.addLetter("l");
-                } else if (e.getKeyCode() == KeyEvent.VK_M) {
-                    wordReader.addLetter("m");
-                } else if (e.getKeyCode() == KeyEvent.VK_N) {
-                    wordReader.addLetter("n");
-                } else if (e.getKeyCode() == KeyEvent.VK_O) {
-                    wordReader.addLetter("o");
-                } else if (e.getKeyCode() == KeyEvent.VK_P) {
-                    wordReader.addLetter("p");
-                } else if (e.getKeyCode() == KeyEvent.VK_Q) {
-                    wordReader.addLetter("q");
-                } else if (e.getKeyCode() == KeyEvent.VK_R) {
-                    wordReader.addLetter("r");
-                } else if (e.getKeyCode() == KeyEvent.VK_S) {
-                    wordReader.addLetter("s");
-                } else if (e.getKeyCode() == KeyEvent.VK_T) {
-                    wordReader.addLetter("t");
-                } else if (e.getKeyCode() == KeyEvent.VK_U) {
-                    wordReader.addLetter("u");
-                } else if (e.getKeyCode() == KeyEvent.VK_V) {
-                    wordReader.addLetter("v");
-                } else if (e.getKeyCode() == KeyEvent.VK_W) {
-                    wordReader.addLetter("w");
-                } else if (e.getKeyCode() == KeyEvent.VK_X) {
-                    wordReader.addLetter("x");
-                } else if (e.getKeyCode() == KeyEvent.VK_Y) {
-                    wordReader.addLetter("y");
-                } else if (e.getKeyCode() == KeyEvent.VK_Z) {
-                    wordReader.addLetter("z");
-                } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                    wordReader.backspace();
-                }
-
                 //if the user has typed the correct word, fire laser
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
-                        level4Manager.shootLaser();
+                        if (level4Manager.hasPowerUp()) {
+                            level4Manager.shoot3Lasers();
+                        } else {
+                            level4Manager.shootLaser();
+                        }
                     } else {
                         player.setLives(player.getLives() - 1);
                     }
@@ -557,7 +426,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     }
 
     //image loading method
-    void loadImage(String imageFile) {
+    private void loadImage(String imageFile) {
         if (needImage) {
             try {
                 image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));

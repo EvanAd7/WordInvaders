@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="separate levels">
+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="fix">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Status.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Status.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -181,14 +183,28 @@
       <option name="project" value="LOCAL" />
       <updated>1653336409384</updated>
     </task>
-    <task id="LOCAL-00016" summary="separate levels">
-      <created>1653420841395</created>
+    <task id="LOCAL-00016" summary="level 3 start">
+      <created>1653423352729</created>
       <option name="number" value="00016" />
       <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
-      <updated>1653420841395</updated>
+      <updated>1653423352729</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="triple lasers">
+      <created>1653451449835</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1653451449835</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fix">
+      <created>1653452279649</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1653452279649</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -217,8 +233,10 @@
     <MESSAGE value="screen swapping" />
     <MESSAGE value="four and six letter" />
     <MESSAGE value="four and six letter fixed" />
-    <MESSAGE value="separate levels" />
-    <option name="LAST_COMMIT_MESSAGE" value="separate levels" />
+    <MESSAGE value="level 3 start" />
+    <MESSAGE value="triple lasers" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

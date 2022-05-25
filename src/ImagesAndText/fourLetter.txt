@@ -61,7 +61,7 @@ cook
 cool
 cope
 copy
-CORE
+core
 cost
 crew
 crop
@@ -255,7 +255,7 @@ main
 make
 male
 many
-Mark
+mark
 mass
 matt
 meal
