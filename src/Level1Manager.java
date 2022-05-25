@@ -10,8 +10,11 @@ public class Level1Manager implements ActionListener {
     private ArrayList<Laser> lasers;
     private ArrayList<PowerUp> powerUps;
 
+    private int counter;
+    private boolean powerUp;
+
     private int points = 0;
-    private int counter = 0;
+    private int count;
 
     //constructor
     public Level1Manager(Player player) {
@@ -19,6 +22,8 @@ public class Level1Manager implements ActionListener {
         enemies = new ArrayList<Enemy>();
         lasers = new ArrayList<Laser>();
         powerUps = new ArrayList<PowerUp>();
+        powerUp = false;
+        count = 0;
     }
 
     //adds an enemy to the array list, priming it to be spawned
@@ -69,22 +74,44 @@ public class Level1Manager implements ActionListener {
 
     //checks which objects have been collided with
     public void checkCollisions() {
-        for (Enemy enemy : enemies) {
-            for (Laser laser : lasers) {
-                if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
-                    enemy.setActive(false);
-                    laser.setActive(false);
-                    points += 100;
+
+        if(powerUp == false) {
+            for (Enemy enemy : enemies) {
+                for (Laser laser : lasers) {
+                    if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
+
+                        enemy.setActive(false);
+                        laser.setActive(false);
+                        points += 100;
+                    }
                 }
             }
         }
+        if(powerUp == true && count <= 10) {
 
+            for (Enemy enemy : enemies) {
+                for (Laser laser : lasers) {
+                    if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
+                        enemy.setActive(false);
+                        laser.setActive(false);
+                        points += 200;
+                        count++;
+                    }
+                    if(count == 10){
+                        powerUp = false;
+                    }
+                }
+            }
+        }
         for (PowerUp powerup : powerUps) {
             for (Laser laser : lasers) {
                 if (powerup.getCollisionBox().intersects(laser.getCollisionBox())) {
                     powerup.setActive(false);
                     laser.setActive(false);
-                    points += 500;
+                    powerUp = true;
+                    int temp = points;
+                    count = 0;
+
                 }
             }
         }
@@ -154,7 +181,7 @@ public class Level1Manager implements ActionListener {
     }
 
     //getters
-    public String getPoints() {
-        return "" + points;
+    public int getPoints() {
+        return points;
     }
 }
