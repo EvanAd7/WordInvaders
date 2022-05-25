@@ -42,7 +42,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         //timer that runs the "frame rate"
         drawFrame = new Timer(1000 / 90, this);
         drawFrame.start();
-        //change space.jpg to whatever you want
+        //change space.jpg to whatever you want du
         loadImage("ImagesAndText/space.jpg");
         loadImage2("ImagesAndText/space.jpg");
         loadImage3("ImagesAndText/space.jpg");
