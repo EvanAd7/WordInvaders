@@ -8,11 +8,10 @@ import java.util.Objects;
 public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //image loading variables
-    public static BufferedImage image;
-    public static BufferedImage image2;
-    public static BufferedImage image3;
-    public static BufferedImage image4;
-
+    private static BufferedImage image1;
+    private static BufferedImage image2;
+    private static BufferedImage image3;
+    private static BufferedImage image4;
 
     //instance variables
     private Player player;
@@ -42,11 +41,12 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         //timer that runs the "frame rate"
         drawFrame = new Timer(1000 / 90, this);
         drawFrame.start();
-        //change space.jpg to whatever you want du
-        loadImage("ImagesAndText/space.jpg");
-        loadImage2("ImagesAndText/space.jpg");
-        loadImage3("ImagesAndText/space.jpg");
-        loadImage4("ImagesAndText/space.jpg");
+
+        //change the background for different levels
+        image1 = loadImage("ImagesAndText/space.jpg");
+        image2 = loadImage("ImagesAndText/space.jpg");
+        image3 = loadImage("ImagesAndText/space.jpg");
+        image4 = loadImage("ImagesAndText/impossibleSpace.jpg");
 
     }
 
@@ -186,7 +186,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //draws the level 1 screen
     public void drawLevel1Screen(Graphics g) {
-        g.drawImage(image, 0, 0, null);
+        g.drawImage(image1, 0, 0, null);
         level1Manager.drawObjects(g);
         drawText(g);
     }
@@ -461,32 +461,12 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     }
 
     //image loading method
-    private void loadImage(String imageFile) {
+    private BufferedImage loadImage(String imageFile) {
         try {
-            image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
+            return ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
         } catch (Exception e) {
             System.out.println("Error at: " + e.getMessage());
         }
-    }
-    private void loadImage2(String imageFile) {
-        try {
-            image2 = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
-        } catch (Exception e) {
-            System.out.println("Error at: " + e.getMessage());
-        }
-    }
-    private void loadImage3(String imageFile) {
-        try {
-            image3 = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
-        } catch (Exception e) {
-            System.out.println("Error at: " + e.getMessage());
-        }
-    }
-    private void loadImage4(String imageFile) {
-        try {
-            image4 = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
-        } catch (Exception e) {
-            System.out.println("Error at: " + e.getMessage());
-        }
+        return null;
     }
 }
