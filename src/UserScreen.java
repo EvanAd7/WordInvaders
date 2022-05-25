@@ -57,6 +57,34 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.drawString("Level 2: Medium", 350, 450);
         g.drawString("Level 3: Hard", 350, 500);
         g.drawString("Level 4: IMPOSSIBLE", 350, 550);
+        g.drawString("Press SPACE for instructions", 280, 700);
+    }
+
+    //draws the instructions screen
+    public void drawInstructionsScreen(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.drawString("How to play WORD INVADERS:", 250, 100);
+
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
+        g.drawString("Word Invaders is an outer-space themed game designed to improve your typing skills. ", 100, 200);
+        g.drawString("The objective of the game is to obtain as many points as you can on each level, ", 100, 230);
+        g.drawString("while simultaneously becoming a better typist. Use left and right arrow keys ", 100, 260);
+        g.drawString("to position your spaceship beneath an enemy spacecraft, and correctly type in ", 100, 290);
+        g.drawString("the word at the top of your screen, then press enter to fire a laser. If the ", 100, 320);
+        g.drawString("laser collides with an enemy, you gain points and the enemy is destroyed. If ", 100, 350);
+        g.drawString("the word is incorrectly typed, you will lose a life and a laser-beam will not fire. ", 100, 380);
+        g.drawString("Additionally, if an enemy is allowed to reach the bottom of your screen, you ", 100, 410);
+        g.drawString("will lose a life. Lose all of your lives, and it's game over! Each level is ", 100, 440);
+        g.drawString("a certain difficulty; in harder levels the enemies spawn faster and the words ", 100, 470);
+        g.drawString("that you must type are longer. Each level also has it's own power-ups, which ", 100, 500);
+        g.drawString("provide boosts such as temporary invincibility. Good luck and happy typing!", 100, 530);
+
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.drawString("Press SPACE to return to menu", 250, 700);
     }
 
     //draws the game-over screen
@@ -77,6 +105,9 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         switch (status) {
             case MENU:
                 drawMenuScreen(g);
+                break;
+            case INSTRUCTIONS:
+                drawInstructionsScreen(g);
                 break;
             case LEVEL1:
                 drawLevel1Screen(g);
@@ -317,6 +348,14 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                     wordReader = new WordReader(6);
                     spawner = new Timer(1000, level4Manager);
                     spawner.start();
+                }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    status = Status.INSTRUCTIONS;
+                }
+                break;
+            case INSTRUCTIONS:
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    status = Status.MENU;
                 }
                 break;
             case LEVEL1:
