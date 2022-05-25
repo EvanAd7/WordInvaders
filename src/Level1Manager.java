@@ -182,7 +182,7 @@ public class Level1Manager implements ActionListener {
     }
 
     //getters
-    public String getPoints() {
-        return "" + points;
+    public int getPoints() {
+        return points;
     }
 }
