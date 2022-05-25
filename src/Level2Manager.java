@@ -74,7 +74,7 @@ public class Level2Manager implements ActionListener {
                 if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
                     enemy.setActive(false);
                     laser.setActive(false);
-                    points += 100;
+                    points += 200;
                 }
             }
         }
@@ -154,7 +154,7 @@ public class Level2Manager implements ActionListener {
     }
 
     //getters
-    public String getPoints() {
-        return "" + points;
+    public int getPoints() {
+        return points;
     }
 }

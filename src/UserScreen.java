@@ -18,6 +18,9 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
     private Timer drawFrame;
     private Timer spawner;
     private Status status = Status.MENU;
+    private Status tempStatus;
+    private int tempScore;
+    private int highScore = 0;
 
     //game managers
     private Level1Manager level1Manager;
@@ -57,7 +60,8 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.drawString("Level 2: Medium", 350, 450);
         g.drawString("Level 3: Hard", 350, 500);
         g.drawString("Level 4: IMPOSSIBLE", 350, 550);
-        g.drawString("Press SPACE for instructions", 280, 700);
+        g.drawString("High Score: " + highScore, 370, 650);
+        g.drawString("Press SPACE for instructions", 280, 800);
     }
 
     //draws the instructions screen
@@ -95,8 +99,31 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 50));
 
         g.setColor(Color.BLACK);
-        g.drawString("GAME OVER!", 350, 200);
-        g.drawString("Press SPACE to return to menu!", 170, 400);
+        g.drawString("GAME OVER!", 320, 200);
+        g.drawString("Press SPACE to return to menu", 150, 600);
+
+        switch (tempStatus) {
+            case LEVEL1:
+                g.drawString("You scored " + level1Manager.getPoints() + " points", 250, 400);
+                tempScore = level1Manager.getPoints();
+                break;
+            case LEVEL2:
+                g.drawString("You scored " + level2Manager.getPoints() + " points", 250, 400);
+                tempScore = level2Manager.getPoints();
+                break;
+            case LEVEL3:
+                g.drawString("You scored " + level3Manager.getPoints() + " points", 250, 400);
+                tempScore = level3Manager.getPoints();
+                break;
+            case LEVEL4:
+                g.drawString("You scored " + level4Manager.getPoints() + " points", 250, 400);
+                tempScore = level4Manager.getPoints();
+                break;
+        }
+
+        if (tempScore > highScore) {
+            highScore = tempScore;
+        }
     }
 
     //paint the screen (JPanel) with active objects
@@ -168,7 +195,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level1Manager.reset();
         }
     }
 
@@ -187,7 +213,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level2Manager.reset();
         }
     }
 
@@ -206,7 +231,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level3Manager.reset();
         }
     }
 
@@ -225,7 +249,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         if (!(player.isActive())) {
             status = Status.END;
             spawner.stop();
-            level4Manager.reset();
         }
     }
 
@@ -330,21 +353,25 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
             case MENU:
                 if (e.getKeyCode() == KeyEvent.VK_1) {
                     status = Status.LEVEL1;
+                    tempStatus = Status.LEVEL1;
                     wordReader = new WordReader(4);
                     spawner = new Timer(4000, level1Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_2) {
                     status = Status.LEVEL2;
+                    tempStatus = Status.LEVEL2;
                     wordReader = new WordReader(5);
                     spawner = new Timer(3000, level2Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_3) {
                     status = Status.LEVEL3;
+                    tempStatus = Status.LEVEL3;
                     wordReader = new WordReader(6);
                     spawner = new Timer(2000, level3Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_4) {
                     status = Status.LEVEL4;
+                    tempStatus = Status.LEVEL4;
                     wordReader = new WordReader(6);
                     spawner = new Timer(1000, level4Manager);
                     spawner.start();
@@ -414,6 +441,10 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     status = Status.MENU;
                     player.setActive(true);
+                    level1Manager.reset();
+                    level2Manager.reset();
+                    level3Manager.reset();
+                    level4Manager.reset();
                 }
                 break;
         }
