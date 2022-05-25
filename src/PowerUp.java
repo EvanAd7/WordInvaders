@@ -3,8 +3,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.util.Objects;
 
-public class PowerUp extends GameObject
-{
+public class PowerUp extends GameObject {
 
     //image loading variables
     public static BufferedImage image;
