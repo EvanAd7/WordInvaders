@@ -102,7 +102,7 @@ public class Level3Manager implements ActionListener {
                     player.setLives(player.getLives() - 1);
                 }
             }
-            if (player.getLives() == 0) {
+            if (player.getLives() <= 0) {
                 player.setActive(false);
             }
         }
