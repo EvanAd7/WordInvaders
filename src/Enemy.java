@@ -6,21 +6,22 @@ import java.util.Objects;
 public class Enemy extends GameObject {
 
     //image loading variables
-    public static BufferedImage image;
-    public static BufferedImage image2;
-    public static BufferedImage image3;
-    public static BufferedImage image4;
-
+    private static BufferedImage image;
 
     //constructor
-    public Enemy(int x, int y, int width, int height) {
+    public Enemy(int x, int y, int width, int height, int imageNumber) {
         super(x, y, width, height, 0, 1);
-
-        loadImage("ImagesAndText/enemy.png");
-        loadImage2("ImagesAndText/enemy.png");
-        loadImage3("ImagesAndText/enemy.png");
-        loadImage4("ImagesAndText/enemy.png");
-
+        if(imageNumber == 1) {
+            loadImage("ImagesAndText/enemy.png");
+        } else if(imageNumber == 2) {
+            loadImage("ImagesAndText/enemy.png");
+        } else if(imageNumber == 3) {
+            loadImage("ImagesAndText/enemy.png");
+        } else if(imageNumber == 4) {
+            loadImage("ImagesAndText/enemy.png");
+        } else {
+            System.out.println("Number for ImageFile Invalid");
+        }
     }
 
     //draws enemy objects
@@ -38,26 +39,6 @@ public class Enemy extends GameObject {
     private void loadImage(String imageFile) {
         try {
             image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
-        } catch (Exception e) {
-            System.out.println("Error at: " + e.getMessage());
-        }
-    }
-    private void loadImage2(String imageFile) {
-        try {
-            image2 = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
-        } catch (Exception e) {
-            System.out.println("Error at: " + e.getMessage());
-        }
-    }
-    private void loadImage3(String imageFile) {
-        try {
-            image3 = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
-        } catch (Exception e) {
-            System.out.println("Error at: " + e.getMessage());
-        }
-    }private void loadImage4(String imageFile) {
-        try {
-            image4 = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
         } catch (Exception e) {
             System.out.println("Error at: " + e.getMessage());
         }

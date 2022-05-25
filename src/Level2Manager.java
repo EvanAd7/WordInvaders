@@ -23,7 +23,7 @@ public class Level2Manager implements ActionListener {
 
     //adds an enemy to the array list, priming it to be spawned
     public void spawnEnemy() {
-        enemies.add(new Enemy((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90));
+        enemies.add(new Enemy((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90, 2));
     }
 
     //adds a new laser to the array list
