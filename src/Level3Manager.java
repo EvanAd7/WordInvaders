@@ -95,14 +95,14 @@ public class Level3Manager implements ActionListener {
     //checks if the player has lost a life or lost the game
     public void lifeLoss() {
         for (Enemy enemy : enemies) {
-            if (!invincible) {
-                if (enemy.getY() > player.getY()) {
-                    enemy.setActive(false);
+            if (enemy.getY() > player.getY()) {
+                enemy.setActive(false);
+                if (!invincible) {
                     player.setLives(player.getLives() - 1);
                 }
-                if (player.getLives() == 0) {
-                    player.setActive(false);
-                }
+            }
+            if (player.getLives() == 0) {
+                player.setActive(false);
             }
         }
     }
@@ -151,11 +151,14 @@ public class Level3Manager implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         spawnEnemy();
         counter++;
-        powerUpReset++;
         if (counter % 10 == 0) {
             spawnPowerUp();
         }
         if (invincible) {
+            powerUpReset++;
+            if ((powerUpReset % 5 == 0) && powerUpReset != 0) {
+                invincible = false;
+            }
         }
     }
 
