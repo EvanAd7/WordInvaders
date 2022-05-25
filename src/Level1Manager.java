@@ -92,7 +92,6 @@ public class Level1Manager implements ActionListener {
             for (Enemy enemy : enemies) {
                 for (Laser laser : lasers) {
                     if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
-
                         enemy.setActive(false);
                         laser.setActive(false);
                         points += 200;
