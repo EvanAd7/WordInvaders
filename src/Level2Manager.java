@@ -84,7 +84,7 @@ public class Level2Manager implements ActionListener {
                 if (powerup.getCollisionBox().intersects(laser.getCollisionBox())) {
                     powerup.setActive(false);
                     laser.setActive(false);
-                    points += 500;
+                    player.setLives(player.getLives()+1);
                 }
             }
         }
