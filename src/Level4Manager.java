@@ -14,7 +14,7 @@ public class Level4Manager implements ActionListener {
     private int counter = 0;
 
     private int timeCounter = 0;
-    private boolean hasPower = false;
+    private boolean hasPowerUp = false;
 
     //constructor
     public Level4Manager(Player player) {
@@ -94,7 +94,7 @@ public class Level4Manager implements ActionListener {
                 if (powerup.getCollisionBox().intersects(laser.getCollisionBox())) {
                     powerup.setActive(false);
                     laser.setActive(false);
-                    hasPower = true;
+                    hasPowerUp = true;
                 }
             }
         }
@@ -162,16 +162,20 @@ public class Level4Manager implements ActionListener {
             spawnPowerUp();
         }
 
-        if (hasPower) {
+        if (hasPowerUp) {
             timeCounter++;
         }
         if (timeCounter % 10 == 0) {
-            hasPower = false;
+            hasPowerUp = false;
         }
     }
 
     //getters
     public String getPoints() {
         return "" + points;
+    }
+
+    public boolean hasPowerUp() {
+        return hasPowerUp;
     }
 }

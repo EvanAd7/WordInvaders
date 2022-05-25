@@ -6,11 +6,6 @@ import java.util.Scanner;
 public class WordReader {
 
     //instance variables
-    /*
-    private String[] wordList1 = readFourLetterWords();
-    private String[] wordList = readFiveLetterWords();
-    private String[] wordList2 = readSixLetterWords();
-     */
     private String[] wordList;
     private String wordTyped;
     private String currentWord;
