@@ -45,7 +45,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         //change the background for different levels
         image1 = loadImage("ImagesAndText/SolarSystem.jpg");
         image2 = loadImage("ImagesAndText/space.jpg");
-        image3 = loadImage("ImagesAndText/space.jpg");
+        image3 = loadImage("ImagesAndText/galaxy.jpg");
         image4 = loadImage("ImagesAndText/blackhole.jpg");
     }
 
