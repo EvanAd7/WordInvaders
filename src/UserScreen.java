@@ -166,15 +166,19 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         switch (status) {
             case LEVEL1:
                 g.drawString("Score: " + level1Manager.getPoints(), 10, 30);
+                g.drawString("Level 1", 10,950);
                 break;
             case LEVEL2:
                 g.drawString("Score: " + level2Manager.getPoints(), 10, 30);
+                g.drawString("Level 2", 10,950);
                 break;
             case LEVEL3:
                 g.drawString("Score: " + level3Manager.getPoints(), 10, 30);
+                g.drawString("Level 3", 10,950);
                 break;
             case LEVEL4:
                 g.drawString("Score: " + level4Manager.getPoints(), 10, 30);
+                g.drawString("Level 4", 10,950);
                 break;
         }
         g.drawString("Type: " + wordReader.getCurrentWord(), 415, 30);
