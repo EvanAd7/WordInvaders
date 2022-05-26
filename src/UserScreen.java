@@ -164,7 +164,6 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.GREEN);
         switch (status) {
             case LEVEL1:
-                g.setColor(Color.GREEN);
                 g.drawString("Score: " + level1Manager.getPoints(), 10, 30);
                 g.drawString("Level 1", 10,950);
                 break;
@@ -187,9 +186,9 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
             g.setColor(Color.GREEN);
         } else {
-            g.setColor(Color.WHITE);
+            g.setColor(Color.RED);
         }
-        g.drawString(wordReader.getWordTyped(), 440, 70);
+        g.drawString(wordReader.getWordTyped(), 455, 70);
     }
 
     //draws the level 1 screen
