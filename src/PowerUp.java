@@ -11,11 +11,19 @@ public class PowerUp extends GameObject {
     public static boolean gotImage = false;
 
     //constructor
-    public PowerUp(int x, int y, int width, int height) {
+    public PowerUp(int x, int y, int width, int height, int imageNumber) {
         super(x, y, width, height, 0, 6);
 
-        if (needImage) {
+        if(imageNumber == 1) {
             loadImage("ImagesAndText/powerup.png");
+        } else if(imageNumber == 2) {
+            loadImage("ImagesAndText/powerup.png");
+        } else if(imageNumber == 3) {
+            loadImage("ImagesAndText/powerup.png");
+        } else if(imageNumber == 4) {
+            loadImage("ImagesAndText/powerup.png");
+        } else {
+            System.out.println("ImageFile invalid");
         }
     }
 
@@ -37,14 +45,10 @@ public class PowerUp extends GameObject {
 
     //image loading method
     private void loadImage(String imageFile) {
-        if (needImage) {
-            try {
-                image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
-                gotImage = true;
-            } catch (Exception e) {
-                System.out.println("Error at: " + e.getMessage());
-            }
-            needImage = false;
+        try {
+            image = ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));
+        } catch (Exception e) {
+            System.out.println("Error at: " + e.getMessage());
         }
     }
 }

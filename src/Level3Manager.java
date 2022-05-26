@@ -35,7 +35,7 @@ public class Level3Manager implements ActionListener {
 
     //adds a power-up to the array list, priming it to be spawned in
     public void spawnPowerUp() {
-        powerUps.add(new PowerUp((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90));
+        powerUps.add(new PowerUp((int) (Math.random() * (WordInvadersDriver.WIDTH - 70)), 0, 90, 90, 3));
     }
 
     //draw game objects onto the screen
