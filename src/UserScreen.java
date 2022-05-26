@@ -183,7 +183,11 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.drawString("Type: " + wordReader.getCurrentWord(), 415, 30);
         g.drawString("Lives: " + player.getLives(), 870, 30);
 
-        g.setColor(Color.WHITE);
+        if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
+            g.setColor(Color.GREEN);
+        } else {
+            g.setColor(Color.WHITE);
+        }
         g.drawString(wordReader.getWordTyped(), 440, 70);
     }
 
@@ -452,6 +456,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                     level2Manager.reset();
                     level3Manager.reset();
                     level4Manager.reset();
+                    player.setX(500);
                 }
                 break;
         }

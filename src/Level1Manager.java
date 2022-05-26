@@ -75,7 +75,7 @@ public class Level1Manager implements ActionListener {
     //checks which objects have been collided with
     public void checkCollisions() {
 
-        if(powerUp == false) {
+        if (powerUp == false) {
             for (Enemy enemy : enemies) {
                 for (Laser laser : lasers) {
                     if (enemy.getCollisionBox().intersects(laser.getCollisionBox())) {
@@ -87,7 +87,7 @@ public class Level1Manager implements ActionListener {
                 }
             }
         }
-        if(powerUp == true && count <= 10) {
+        if (powerUp == true && count <= 10) {
 
             for (Enemy enemy : enemies) {
                 for (Laser laser : lasers) {
@@ -97,7 +97,7 @@ public class Level1Manager implements ActionListener {
                         points += 200;
                         count++;
                     }
-                    if(count == 10){
+                    if (count == 10) {
                         powerUp = false;
                     }
                 }
