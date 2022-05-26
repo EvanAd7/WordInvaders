@@ -19,7 +19,7 @@ public class PowerUp extends GameObject {
         } else if(imageNumber == 3) {
             loadImage("ImagesAndText/shield2.png");
         } else if(imageNumber == 4) {
-            loadImage("ImagesAndText/powerup.png");
+            loadImage("ImagesAndText/meteor.png");
         } else {
             System.out.println("ImageFile invalid");
         }
