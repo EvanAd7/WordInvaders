@@ -1,0 +1,1037 @@
+Index: src/UserScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javax.imageio.ImageIO;\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.awt.image.BufferedImage;\r\nimport java.util.Objects;\r\n\r\npublic class UserScreen extends JPanel implements ActionListener, KeyListener {\r\n\r\n    //image loading variables\r\n    private static BufferedImage image1;\r\n    private static BufferedImage image2;\r\n    private static BufferedImage image3;\r\n    private static BufferedImage image4;\r\n\r\n    //instance variables\r\n    private Player player;\r\n    private WordReader wordReader;\r\n    private Timer drawFrame;\r\n    private Timer spawner;\r\n    private Status status = Status.MENU;\r\n    private Status tempStatus;\r\n    private int tempScore;\r\n    private int highScore = 0;\r\n\r\n    //game managers\r\n    private Level1Manager level1Manager;\r\n    private Level2Manager level2Manager;\r\n    private Level3Manager level3Manager;\r\n    private Level4Manager level4Manager;\r\n\r\n    //constructor\r\n    public UserScreen() {\r\n        player = new Player(500, 860, 90, 90);\r\n\r\n        level1Manager = new Level1Manager(player);\r\n        level2Manager = new Level2Manager(player);\r\n        level3Manager = new Level3Manager(player);\r\n        level4Manager = new Level4Manager(player);\r\n\r\n        //timer that runs the \"frame rate\"\r\n        drawFrame = new Timer(1000 / 90, this);\r\n        drawFrame.start();\r\n\r\n        //change the background for different levels\r\n        image1 = loadImage(\"ImagesAndText/space.jpg\");\r\n        image2 = loadImage(\"ImagesAndText/space.jpg\");\r\n        image3 = loadImage(\"ImagesAndText/space.jpg\");\r\n        image4 = loadImage(\"ImagesAndText/impossibleSpace.jpg\");\r\n\r\n    }\r\n\r\n    //draws the menu screen\r\n    public void drawMenuScreen(Graphics g) {\r\n        g.setColor(Color.BLACK);\r\n        g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);\r\n\r\n        g.setFont(new Font(\"Arial\", Font.PLAIN, 30));\r\n\r\n        g.setColor(Color.WHITE);\r\n        g.drawString(\"WORD INVADERS\", 350, 150);\r\n        g.drawString(\"Press key: 1, 2, 3, 4 for respective levels\", 200, 250);\r\n        g.drawString(\"Level 1: Easy\", 350, 400);\r\n        g.drawString(\"Level 2: Medium\", 350, 450);\r\n        g.drawString(\"Level 3: Hard\", 350, 500);\r\n        g.drawString(\"Level 4: IMPOSSIBLE\", 350, 550);\r\n        g.drawString(\"High Score: \" + highScore, 370, 650);\r\n        g.drawString(\"Press SPACE for instructions\", 280, 800);\r\n    }\r\n\r\n    //draws the instructions screen\r\n    public void drawInstructionsScreen(Graphics g) {\r\n        g.setColor(Color.WHITE);\r\n        g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);\r\n\r\n        g.setColor(Color.BLACK);\r\n        g.setFont(new Font(\"Arial\", Font.PLAIN, 30));\r\n        g.drawString(\"How to play WORD INVADERS:\", 250, 100);\r\n\r\n        g.setFont(new Font(\"Arial\", Font.PLAIN, 20));\r\n        g.drawString(\"Word Invaders is an outer-space themed game designed to improve your typing skills. \", 100, 200);\r\n        g.drawString(\"The objective of the game is to obtain as many points as you can on each level, \", 100, 230);\r\n        g.drawString(\"while simultaneously becoming a better typist. Use left and right arrow keys \", 100, 260);\r\n        g.drawString(\"to position your spaceship beneath an enemy spacecraft, and correctly type in \", 100, 290);\r\n        g.drawString(\"the word at the top of your screen, then press enter to fire a laser. If the \", 100, 320);\r\n        g.drawString(\"laser collides with an enemy, you gain points and the enemy is destroyed. If \", 100, 350);\r\n        g.drawString(\"the word is incorrectly typed, you will lose a life and a laser-beam will not fire. \", 100, 380);\r\n        g.drawString(\"Additionally, if an enemy is allowed to reach the bottom of your screen, you \", 100, 410);\r\n        g.drawString(\"will lose a life. Lose all of your lives, and it's game over! Each level is \", 100, 440);\r\n        g.drawString(\"a certain difficulty; in harder levels the enemies spawn faster and the words \", 100, 470);\r\n        g.drawString(\"that you must type are longer. Each level also has it's own power-ups, which \", 100, 500);\r\n        g.drawString(\"provide boosts such as temporary invincibility. Good luck and happy typing!\", 100, 530);\r\n\r\n        g.setFont(new Font(\"Arial\", Font.PLAIN, 30));\r\n        g.drawString(\"Press SPACE to return to menu\", 250, 700);\r\n    }\r\n\r\n    //draws the game-over screen\r\n    public void drawEndScreen(Graphics g) {\r\n        g.setColor(Color.RED);\r\n        g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);\r\n\r\n        g.setFont(new Font(\"Arial\", Font.PLAIN, 50));\r\n\r\n        g.setColor(Color.BLACK);\r\n        g.drawString(\"GAME OVER!\", 320, 200);\r\n        g.drawString(\"Press SPACE to return to menu\", 150, 600);\r\n\r\n        switch (tempStatus) {\r\n            case LEVEL1:\r\n                g.drawString(\"You scored \" + level1Manager.getPoints() + \" points\", 250, 400);\r\n                tempScore = level1Manager.getPoints();\r\n                break;\r\n            case LEVEL2:\r\n                g.drawString(\"You scored \" + level2Manager.getPoints() + \" points\", 250, 400);\r\n                tempScore = level2Manager.getPoints();\r\n                break;\r\n            case LEVEL3:\r\n                g.drawString(\"You scored \" + level3Manager.getPoints() + \" points\", 250, 400);\r\n                tempScore = level3Manager.getPoints();\r\n                break;\r\n            case LEVEL4:\r\n                g.drawString(\"You scored \" + level4Manager.getPoints() + \" points\", 250, 400);\r\n                tempScore = level4Manager.getPoints();\r\n                break;\r\n        }\r\n\r\n        if (tempScore > highScore) {\r\n            highScore = tempScore;\r\n        }\r\n    }\r\n\r\n    //paint the screen (JPanel) with active objects\r\n    @Override\r\n    public void paintComponent(Graphics g) {\r\n        switch (status) {\r\n            case MENU:\r\n                drawMenuScreen(g);\r\n                break;\r\n            case INSTRUCTIONS:\r\n                drawInstructionsScreen(g);\r\n                break;\r\n            case LEVEL1:\r\n                drawLevel1Screen(g);\r\n                break;\r\n            case LEVEL2:\r\n                drawLevel2Screen(g);\r\n                break;\r\n            case LEVEL3:\r\n                drawLevel3Screen(g);\r\n                break;\r\n            case LEVEL4:\r\n                drawLevel4Screen(g);\r\n                break;\r\n            case END:\r\n                drawEndScreen(g);\r\n                break;\r\n        }\r\n    }\r\n\r\n    //draw text for the level at the top of the screen\r\n    public void drawText(Graphics g) {\r\n        g.setFont(new Font(\"Arial\", Font.PLAIN, 30));\r\n\r\n        g.setColor(Color.GREEN);\r\n        switch (status) {\r\n            case LEVEL1:\r\n                g.drawString(\"Score: \" + level1Manager.getPoints(), 10, 30);\r\n                break;\r\n            case LEVEL2:\r\n                g.drawString(\"Score: \" + level2Manager.getPoints(), 10, 30);\r\n                break;\r\n            case LEVEL3:\r\n                g.drawString(\"Score: \" + level3Manager.getPoints(), 10, 30);\r\n                break;\r\n            case LEVEL4:\r\n                g.drawString(\"Score: \" + level4Manager.getPoints(), 10, 30);\r\n                break;\r\n        }\r\n        g.drawString(\"Type: \" + wordReader.getCurrentWord(), 415, 30);\r\n        g.drawString(\"Lives: \" + player.getLives(), 870, 30);\r\n\r\n        g.setColor(Color.WHITE);\r\n        g.drawString(wordReader.getWordTyped(), 440, 70);\r\n    }\r\n\r\n    //draws the level 1 screen\r\n    public void drawLevel1Screen(Graphics g) {\r\n        g.drawImage(image1, 0, 0, null);\r\n        level1Manager.drawObjects(g);\r\n        drawText(g);\r\n    }\r\n\r\n    //updates level 1 objects at a certain rate\r\n    public void updateLevel1Screen() {\r\n        player.updatePlayer();\r\n        level1Manager.updateObjects();\r\n\r\n        if (!(player.isActive())) {\r\n            status = Status.END;\r\n            spawner.stop();\r\n        }\r\n    }\r\n\r\n    //draws the level 2 screen\r\n    public void drawLevel2Screen(Graphics g) {\r\n        g.drawImage(image2, 0, 0, null);\r\n        level2Manager.drawObjects(g);\r\n        drawText(g);\r\n    }\r\n\r\n    //updates level 2 objects at a certain rate\r\n    public void updateLevel2Screen() {\r\n        player.updatePlayer();\r\n        level2Manager.updateObjects();\r\n\r\n        if (!(player.isActive())) {\r\n            status = Status.END;\r\n            spawner.stop();\r\n        }\r\n    }\r\n\r\n    //draws the level 3 screen\r\n    public void drawLevel3Screen(Graphics g) {\r\n        g.drawImage(image3, 0, 0, null);\r\n        level3Manager.drawObjects(g);\r\n        drawText(g);\r\n    }\r\n\r\n    //updates level 3 objects at a certain rate\r\n    public void updateLevel3Screen() {\r\n        player.updatePlayer();\r\n        level3Manager.updateObjects();\r\n\r\n        if (!(player.isActive())) {\r\n            status = Status.END;\r\n            spawner.stop();\r\n        }\r\n    }\r\n\r\n    //draws the level 4 screen\r\n    public void drawLevel4Screen(Graphics g) {\r\n        g.drawImage(image4, 0, 0, null);\r\n        level4Manager.drawObjects(g);\r\n        drawText(g);\r\n    }\r\n\r\n    //updates level 4 objects at a certain rate\r\n    public void updateLevel4Screen() {\r\n        player.updatePlayer();\r\n        level4Manager.updateObjects();\r\n\r\n        if (!(player.isActive())) {\r\n            status = Status.END;\r\n            spawner.stop();\r\n        }\r\n    }\r\n\r\n    //key and action listener methods:\r\n    //action performed method runs at a certain frame rate\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        //update all objects then repaint the screen\r\n        switch (status) {\r\n            case LEVEL1:\r\n                updateLevel1Screen();\r\n                break;\r\n            case LEVEL2:\r\n                updateLevel2Screen();\r\n                break;\r\n            case LEVEL3:\r\n                updateLevel3Screen();\r\n                break;\r\n            case LEVEL4:\r\n                updateLevel4Screen();\r\n                break;\r\n        }\r\n        repaint();\r\n    }\r\n\r\n    //reads when a key is typed by the user\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n    }\r\n\r\n    //reads when the user presses a key and translates into code\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n        if (status == Status.LEVEL1 || status == Status.LEVEL2 || status == Status.LEVEL3 || status == Status.LEVEL4) {\r\n            //player movement controllers\r\n            if (e.getKeyCode() == KeyEvent.VK_LEFT) {\r\n                player.moveLeft();\r\n            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {\r\n                player.moveRight();\r\n            }\r\n\r\n            //check what the user is typing\r\n            if (e.getKeyCode() == KeyEvent.VK_A) {\r\n                wordReader.addLetter(\"a\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_B) {\r\n                wordReader.addLetter(\"b\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_C) {\r\n                wordReader.addLetter(\"c\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_D) {\r\n                wordReader.addLetter(\"d\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_E) {\r\n                wordReader.addLetter(\"e\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_F) {\r\n                wordReader.addLetter(\"f\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_G) {\r\n                wordReader.addLetter(\"g\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_H) {\r\n                wordReader.addLetter(\"h\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_I) {\r\n                wordReader.addLetter(\"i\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_J) {\r\n                wordReader.addLetter(\"j\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_K) {\r\n                wordReader.addLetter(\"k\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_L) {\r\n                wordReader.addLetter(\"l\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_M) {\r\n                wordReader.addLetter(\"m\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_N) {\r\n                wordReader.addLetter(\"n\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_O) {\r\n                wordReader.addLetter(\"o\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_P) {\r\n                wordReader.addLetter(\"p\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_Q) {\r\n                wordReader.addLetter(\"q\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_R) {\r\n                wordReader.addLetter(\"r\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_S) {\r\n                wordReader.addLetter(\"s\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_T) {\r\n                wordReader.addLetter(\"t\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_U) {\r\n                wordReader.addLetter(\"u\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_V) {\r\n                wordReader.addLetter(\"v\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_W) {\r\n                wordReader.addLetter(\"w\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_X) {\r\n                wordReader.addLetter(\"x\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_Y) {\r\n                wordReader.addLetter(\"y\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_Z) {\r\n                wordReader.addLetter(\"z\");\r\n            } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {\r\n                wordReader.backspace();\r\n            }\r\n        }\r\n\r\n        //check what game state we are in\r\n        switch (status) {\r\n            case MENU:\r\n                if (e.getKeyCode() == KeyEvent.VK_1) {\r\n                    status = Status.LEVEL1;\r\n                    tempStatus = Status.LEVEL1;\r\n                    wordReader = new WordReader(4);\r\n                    spawner = new Timer(4000, level1Manager);\r\n                    spawner.start();\r\n                } else if (e.getKeyCode() == KeyEvent.VK_2) {\r\n                    status = Status.LEVEL2;\r\n                    tempStatus = Status.LEVEL2;\r\n                    wordReader = new WordReader(5);\r\n                    spawner = new Timer(3000, level2Manager);\r\n                    spawner.start();\r\n                } else if (e.getKeyCode() == KeyEvent.VK_3) {\r\n                    status = Status.LEVEL3;\r\n                    tempStatus = Status.LEVEL3;\r\n                    wordReader = new WordReader(6);\r\n                    spawner = new Timer(2000, level3Manager);\r\n                    spawner.start();\r\n                } else if (e.getKeyCode() == KeyEvent.VK_4) {\r\n                    status = Status.LEVEL4;\r\n                    tempStatus = Status.LEVEL4;\r\n                    wordReader = new WordReader(6);\r\n                    spawner = new Timer(1000, level4Manager);\r\n                    spawner.start();\r\n                }\r\n                if (e.getKeyCode() == KeyEvent.VK_SPACE) {\r\n                    status = Status.INSTRUCTIONS;\r\n                }\r\n                break;\r\n            case INSTRUCTIONS:\r\n                if (e.getKeyCode() == KeyEvent.VK_SPACE) {\r\n                    status = Status.MENU;\r\n                }\r\n                break;\r\n            case LEVEL1:\r\n                //if the user has typed the correct word, fire laser\r\n                if (e.getKeyCode() == KeyEvent.VK_ENTER) {\r\n                    if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {\r\n                        level1Manager.shootLaser();\r\n                    } else {\r\n                        player.setLives(player.getLives() - 1);\r\n                    }\r\n                    wordReader.setWordTyped(\"\");\r\n                    wordReader.newWord();\r\n                }\r\n                break;\r\n            case LEVEL2:\r\n                //if the user has typed the correct word, fire laser\r\n                if (e.getKeyCode() == KeyEvent.VK_ENTER) {\r\n                    if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {\r\n                        level2Manager.shootLaser();\r\n                    } else {\r\n                        player.setLives(player.getLives() - 1);\r\n                    }\r\n                    wordReader.setWordTyped(\"\");\r\n                    wordReader.newWord();\r\n                }\r\n                break;\r\n            case LEVEL3:\r\n                //if the user has typed the correct word, fire laser\r\n                if (e.getKeyCode() == KeyEvent.VK_ENTER) {\r\n                    if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {\r\n                        level3Manager.shootLaser();\r\n                    } else {\r\n                        player.setLives(player.getLives() - 1);\r\n                    }\r\n                    wordReader.setWordTyped(\"\");\r\n                    wordReader.newWord();\r\n                }\r\n                break;\r\n            case LEVEL4:\r\n                //if the user has typed the correct word, fire laser\r\n                if (e.getKeyCode() == KeyEvent.VK_ENTER) {\r\n                    if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {\r\n                        if (level4Manager.hasPowerUp()) {\r\n                            level4Manager.shoot3Lasers();\r\n                        } else {\r\n                            level4Manager.shootLaser();\r\n                        }\r\n                    } else {\r\n                        player.setLives(player.getLives() - 1);\r\n                    }\r\n                    wordReader.setWordTyped(\"\");\r\n                    wordReader.newWord();\r\n                }\r\n                break;\r\n            case END:\r\n                if (e.getKeyCode() == KeyEvent.VK_SPACE) {\r\n                    status = Status.MENU;\r\n                    player.setActive(true);\r\n                    level1Manager.reset();\r\n                    level2Manager.reset();\r\n                    level3Manager.reset();\r\n                    level4Manager.reset();\r\n                }\r\n                break;\r\n        }\r\n    }\r\n\r\n    //stops movement upon release of a key\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n        player.setSpeedX(0);\r\n    }\r\n\r\n    //image loading method\r\n    private BufferedImage loadImage(String imageFile) {\r\n        try {\r\n            return ImageIO.read(Objects.requireNonNull(this.getClass().getResourceAsStream(imageFile)));\r\n        } catch (Exception e) {\r\n            System.out.println(\"Error at: \" + e.getMessage());\r\n        }\r\n        return null;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/UserScreen.java b/src/UserScreen.java
+--- a/src/UserScreen.java	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ b/src/UserScreen.java	(date 1653593769832)
+@@ -45,7 +45,7 @@
+         //change the background for different levels
+         image1 = loadImage("ImagesAndText/space.jpg");
+         image2 = loadImage("ImagesAndText/space.jpg");
+-        image3 = loadImage("ImagesAndText/space.jpg");
++        image3 = loadImage("ImagesAndText/space3.jpg");
+         image4 = loadImage("ImagesAndText/impossibleSpace.jpg");
+ 
+     }
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,193 +0,0 @@
+-Index: src/Player.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import java.awt.*;\r\n\r\npublic class Player extends GameObject\r\n{\r\n    //constructor\r\n    public Player(int x, int y, int width, int height) {\r\n        super(x, y, width, height, 0, 0);\r\n    }\r\n\r\n    //draw player object\r\n    public void draw(Graphics g) {\r\n        g.setColor(Color.BLACK);\r\n        g.fillRect(getX(), getY(), getWidth(), getHeight());\r\n    }\r\n\r\n    //movement methods\r\n    public void moveLeft() {\r\n        setSpeedX(-10);\r\n    }\r\n    public void moveRight() {\r\n        setSpeedX(10);\r\n    }\r\n\r\n    //update the player\r\n    public void updatePlayer() {\r\n        //if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {\r\n        setX(getX()+getSpeedX());\r\n        //}\r\n\r\n        super.update();\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/Player.java b/src/Player.java
+---- a/src/Player.java	(revision e3bece06e1d9797210fe22cc385ce11b38cfac27)
+-+++ b/src/Player.java	(date 1652904175076)
+-@@ -4,7 +4,8 @@
+- {
+-     //constructor
+-     public Player(int x, int y, int width, int height) {
+--        super(x, y, width, height, 0, 0);
+-+        super(x, y, width, height);
+-+        setSpeedX(0);
+-     }
+- 
+-     //draw player object
+-@@ -23,10 +24,9 @@
+- 
+-     //update the player
+-     public void updatePlayer() {
+--        //if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {
+--        setX(getX()+getSpeedX());
+--        //}
+--
+-+        if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {
+-+            setX(getX()+getSpeedX());
+-+        }
+-         super.update();
+-     }
+- }
+-Index: src/GameObject.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import java.awt.*;\r\n\r\npublic class GameObject {\r\n\r\n    //instance variables\r\n    private int x;\r\n    private int y;\r\n    private int width;\r\n    private int height;\r\n\r\n    private int speedX;\r\n    private int speedY;\r\n\r\n    boolean active = true;\r\n\r\n    Rectangle collisionBox;\r\n\r\n    //constructor\r\n    GameObject(int x, int y, int width, int height, int speedX, int speedY) {\r\n\r\n        this.x = x;\r\n        this.y = y;\r\n        this.width = width;\r\n        this.height = height;\r\n        this.speedX = speedX;\r\n        this.speedY = speedY;\r\n\r\n        collisionBox = new Rectangle(x, y, width, height);\r\n    }\r\n\r\n    //basic update method\r\n    void update() {\r\n\r\n        collisionBox.setBounds(x, y, width, height);\r\n    }\r\n\r\n    //getters\r\n    public int getX() {\r\n        return x;\r\n    }\r\n    public int getY() {\r\n        return y;\r\n    }\r\n    public int getWidth() {\r\n        return width;\r\n    }\r\n    public int getHeight() {\r\n        return height;\r\n    }\r\n    public int getSpeedX() {\r\n        return speedX;\r\n    }\r\n    public int getSpeedY() {\r\n        return speedY;\r\n    }\r\n\r\n    //setters\r\n    public void setX(int x) {\r\n        this.x = x;\r\n    }\r\n    public void setY(int y) {\r\n        this.y = y;\r\n    }\r\n    public void setWidth(int width) {\r\n        this.width = width;\r\n    }\r\n    public void setHeight(int height) {\r\n        this.height = height;\r\n    }\r\n    public void setSpeedX(int speedX) {\r\n        this.speedX = speedX;\r\n    }\r\n    public void setSpeedY(int speedY) {\r\n        this.speedY = speedY;\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/GameObject.java b/src/GameObject.java
+---- a/src/GameObject.java	(revision e3bece06e1d9797210fe22cc385ce11b38cfac27)
+-+++ b/src/GameObject.java	(date 1652904154716)
+-@@ -8,22 +8,22 @@
+-     private int width;
+-     private int height;
+- 
+--    private int speedX;
+--    private int speedY;
+-+    private int speedX = 0;
+-+    private int speedY = 0;
+- 
+-     boolean active = true;
+- 
+-     Rectangle collisionBox;
+- 
+-     //constructor
+--    GameObject(int x, int y, int width, int height, int speedX, int speedY) {
+-+    GameObject(int x, int y, int width, int height/*, int speedX, int speedY*/) {
+- 
+-         this.x = x;
+-         this.y = y;
+-         this.width = width;
+-         this.height = height;
+--        this.speedX = speedX;
+--        this.speedY = speedY;
+-+        //this.speedX = speedX;
+-+        //this.speedY = speedY;
+- 
+-         collisionBox = new Rectangle(x, y, width, height);
+-     }
+-Index: src/UserScreen.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\n\r\npublic class UserScreen extends JPanel implements ActionListener, KeyListener {\r\n\r\n    //instance variables\r\n    Player player;\r\n    GameManager manager;\r\n    Timer drawFrame;\r\n    int inc;\r\n    int x = -1;\r\n\r\n    //constructor\r\n    public UserScreen() {\r\n        player = new Player(500, 900, 50, 50);\r\n        manager = new GameManager(player);\r\n\r\n        drawFrame = new Timer(1000/60, this);\r\n        drawFrame.start();\r\n        Timer timer = new Timer(1000/60, e -> UserScreen.this.repaint());\r\n        timer.start();\r\n    }\r\n    //paint the screen with active objects\r\n    @Override\r\n    public void paintComponent(Graphics g) {\r\n        if(x > getWidth()) inc = -5;\r\n        if(x < 0) inc = 5;\r\n\r\n        x += inc;\r\n\r\n        // here we clear everything\r\n        g.setColor(Color.WHITE);\r\n        g.fillRect(0, 0, getWidth(), getHeight());\r\n        drawLevelScreen(g);\r\n    }\r\n\r\n    //draw current user screen\r\n    public void drawLevelScreen(Graphics g) {\r\n        manager.draw(g);\r\n    }\r\n\r\n    //update current user screen\r\n    public void updateLevelScreen() {\r\n        player.updatePlayer();\r\n    }\r\n\r\n    //key and action listener methods\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        updateLevelScreen();\r\n        repaint();\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n        if (e.getKeyCode() == KeyEvent.VK_LEFT) {\r\n            player.moveLeft();\r\n        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {\r\n            player.moveRight();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n        player.setSpeedX(0);\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/UserScreen.java b/src/UserScreen.java
+---- a/src/UserScreen.java	(revision e3bece06e1d9797210fe22cc385ce11b38cfac27)
+-+++ b/src/UserScreen.java	(date 1652903521639)
+-@@ -8,8 +8,6 @@
+-     Player player;
+-     GameManager manager;
+-     Timer drawFrame;
+--    int inc;
+--    int x = -1;
+- 
+-     //constructor
+-     public UserScreen() {
+-@@ -18,20 +16,11 @@
+- 
+-         drawFrame = new Timer(1000/60, this);
+-         drawFrame.start();
+--        Timer timer = new Timer(1000/60, e -> UserScreen.this.repaint());
+--        timer.start();
+-     }
+-+
+-     //paint the screen with active objects
+-     @Override
+-     public void paintComponent(Graphics g) {
+--        if(x > getWidth()) inc = -5;
+--        if(x < 0) inc = 5;
+--
+--        x += inc;
+--
+--        // here we clear everything
+--        g.setColor(Color.WHITE);
+--        g.fillRect(0, 0, getWidth(), getHeight());
+-         drawLevelScreen(g);
+-     }
+- 
+-@@ -50,7 +39,6 @@
+-     public void actionPerformed(ActionEvent e) {
+-         updateLevelScreen();
+-         repaint();
+--
+-     }
+- 
+-     @Override
+-Index: src/Level.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Random;\r\nimport javax.swing.*;\r\n\r\npublic class Level extends JPanel implements ActionListener, KeyListener {\r\n\r\n    int levelNum;\r\n    long time;\r\n    int points;\r\n    boolean cleared;\r\n    private Player player;\r\n    private ArrayList<Enemy> enemies;\r\n    private ArrayList<PowerUp> powerUps;\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n    }\r\n\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n\r\n    }\r\n    public int getTime()\r\n    {\r\n        long startTime = System.currentTimeMillis();\r\n        long elapsedTime = System.currentTimeMillis() - startTime;\r\n        long elapsedSeconds = elapsedTime / 1000;\r\n        return (int) elapsedSeconds % 60;\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/Level.java b/src/Level.java
+---- a/src/Level.java	(revision e3bece06e1d9797210fe22cc385ce11b38cfac27)
+-+++ b/src/Level.java	(date 1652902840079)
+-@@ -31,12 +31,5 @@
+-     @Override
+-     public void keyReleased(KeyEvent e) {
+- 
+--    }
+--    public int getTime()
+--    {
+--        long startTime = System.currentTimeMillis();
+--        long elapsedTime = System.currentTimeMillis() - startTime;
+--        long elapsedSeconds = elapsedTime / 1000;
+--        return (int) elapsedSeconds % 60;
+-     }
+- }
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"Fixed Repaint\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29JkZBkjrphn5kGZDanawPcBhaS\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"WordInvadersDriver\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"WordInvadersDriver\" />\r\n      <module name=\"WordInvaders\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.WordInvadersDriver\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"\" />\r\n      <created>1652838631924</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652838631924</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"in progress game object\">\r\n      <created>1652840529793</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652840529793</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Driver in progress\">\r\n      <created>1652841748065</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652841748065</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"trying to get movement\">\r\n      <created>1652844020345</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652844020345</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"RECTANGLE DRAWN\">\r\n      <created>1652844611413</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652844611413</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Fixed Repaint\">\r\n      <created>1652846702631</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652846702631</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"6\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"in progress game object\" />\r\n    <MESSAGE value=\"Driver in progress\" />\r\n    <MESSAGE value=\"trying to get movement\" />\r\n    <MESSAGE value=\"RECTANGLE DRAWN\" />\r\n    <MESSAGE value=\"Fixed Repaint\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Fixed Repaint\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision e3bece06e1d9797210fe22cc385ce11b38cfac27)
+-+++ b/.idea/workspace.xml	(date 1652904336404)
+-@@ -4,7 +4,13 @@
+-     <option name="autoReloadType" value="SELECTIVE" />
+-   </component>
+-   <component name="ChangeListManager">
+--    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="Fixed Repaint" />
+-+    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="Fixed Repaint">
+-+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameObject.java" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level.java" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
+-+    </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+-@@ -24,6 +30,7 @@
+-     <option name="stateVersion" value="1" />
+-   </component>
+-   <component name="ProjectId" id="29JkZBkjrphn5kGZDanawPcBhaS" />
+-+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+-   <component name="ProjectViewState">
+-     <option name="hideEmptyMiddlePackages" value="true" />
+-     <option name="showLibraryContents" value="true" />
+-@@ -92,7 +99,14 @@
+-       <option name="project" value="LOCAL" />
+-       <updated>1652846702631</updated>
+-     </task>
+--    <option name="localTasksCounter" value="6" />
+-+    <task id="LOCAL-00006" summary="Fixed Repaint">
+-+      <created>1652902574699</created>
+-+      <option name="number" value="00006" />
+-+      <option name="presentableId" value="LOCAL-00006" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652902574699</updated>
+-+    </task>
+-+    <option name="localTasksCounter" value="7" />
+-     <servers />
+-   </component>
+-   <component name="Vcs.Log.Tabs.Properties">
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM_[Changes]" date="1652905810175" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2022 1:30 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM_[Changes]" date="1652986410915" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/19/2022 11:53 AM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM_[Changes]" date="1652903226820" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2022 12:46 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM_[Changes]" date="1652902304486" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2022 12:31 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,90 +0,0 @@
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"laser class\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29IwL4yc2Jdr0cwPglVEZQGLwwt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/pinnellt3185/IdeaProjects/WordInvaders/src&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"\" />\r\n      <created>1652813851118</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652813851118</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"int added\">\r\n      <created>1652814922890</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652814922890</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"int added\" />\r\n    <MESSAGE value=\"Added Classes\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Added Classes\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision 1e73dbe34834de139160f6e39bb82bb52f3cdc08)
+-+++ b/.idea/workspace.xml	(date 1652818504756)
+-@@ -4,7 +4,8 @@
+-     <option name="autoReloadType" value="SELECTIVE" />
+-   </component>
+-   <component name="ChangeListManager">
+--    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="laser class">
+-+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="powerUp class">
+-+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" afterDir="false" />
+-       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-     </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-@@ -20,6 +21,7 @@
+-     </option>
+-   </component>
+-   <component name="Git.Settings">
+-+    <option name="PUSH_AUTO_UPDATE" value="true" />
+-     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-   </component>
+-   <component name="MarkdownSettingsMigration">
+-@@ -41,6 +43,20 @@
+-     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+-   }
+- }</component>
+-+  <component name="RunManager">
+-+    <configuration name="JFrame" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+-+      <option name="MAIN_CLASS_NAME" value="JFrame" />
+-+      <module name="WordInvaders" />
+-+      <method v="2">
+-+        <option name="Make" enabled="true" />
+-+      </method>
+-+    </configuration>
+-+    <recent_temporary>
+-+      <list>
+-+        <item itemvalue="Application.JFrame" />
+-+      </list>
+-+    </recent_temporary>
+-+  </component>
+-   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+-   <component name="TaskManager">
+-     <task active="true" id="Default" summary="Default task">
+-@@ -57,7 +73,28 @@
+-       <option name="project" value="LOCAL" />
+-       <updated>1652814922890</updated>
+-     </task>
+--    <option name="localTasksCounter" value="2" />
+-+    <task id="LOCAL-00002" summary="laser class">
+-+      <created>1652817500819</created>
+-+      <option name="number" value="00002" />
+-+      <option name="presentableId" value="LOCAL-00002" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652817500819</updated>
+-+    </task>
+-+    <task id="LOCAL-00003" summary="powerUp class">
+-+      <created>1652817894373</created>
+-+      <option name="number" value="00003" />
+-+      <option name="presentableId" value="LOCAL-00003" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652817894373</updated>
+-+    </task>
+-+    <task id="LOCAL-00004" summary="powerUp class">
+-+      <created>1652818373040</created>
+-+      <option name="number" value="00004" />
+-+      <option name="presentableId" value="LOCAL-00004" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652818373040</updated>
+-+    </task>
+-+    <option name="localTasksCounter" value="5" />
+-     <servers />
+-   </component>
+-   <component name="Vcs.Log.Tabs.Properties">
+-@@ -74,6 +111,8 @@
+-   <component name="VcsManagerConfiguration">
+-     <MESSAGE value="int added" />
+-     <MESSAGE value="Added Classes" />
+--    <option name="LAST_COMMIT_MESSAGE" value="Added Classes" />
+-+    <MESSAGE value="laser class" />
+-+    <MESSAGE value="powerUp class" />
+-+    <option name="LAST_COMMIT_MESSAGE" value="powerUp class" />
+-   </component>
+- </project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM_[Changes]" date="1652928917598" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2022 7:55 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM_[Changes]" date="1652986145870" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/19/2022 11:49 AM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM_[Changes]" date="1652929913614" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2022 8:11 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,30 +0,0 @@
+-Index: src/UserScreen.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import javax.imageio.ImageIO;\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.awt.image.BufferedImage;\r\n\r\npublic class UserScreen extends JPanel implements ActionListener, KeyListener {\r\n\r\n    //instance variables\r\n    public static BufferedImage image;\r\n    public static boolean needImage = true;\r\n    public static boolean gotImage = false;\r\n\r\n    Player player;\r\n    GameManager manager;\r\n    Timer drawFrame;\r\n\r\n    //constructor\r\n    public UserScreen() {\r\n        player = new Player(500, 900, 50, 50);\r\n        manager = new GameManager(player);\r\n\r\n        drawFrame = new Timer(1000/60, this);\r\n        drawFrame.start();\r\n\r\n        if (needImage) {\r\n            loadImage (\"space.jpg\");\r\n        }\r\n    }\r\n\r\n    //paint the screen with active objects\r\n    @Override\r\n    public void paintComponent(Graphics g) {\r\n        drawLevelScreen(g);\r\n    }\r\n\r\n    //draw current user screen\r\n    public void drawLevelScreen(Graphics g) {\r\n        g.drawImage(image, 0, 0, null);\r\n        manager.draw(g);\r\n    }\r\n\r\n    //update current user screen\r\n    public void updateLevelScreen() {\r\n        player.updatePlayer();\r\n    }\r\n\r\n    //key and action listener methods\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        updateLevelScreen();\r\n        repaint();\r\n    }\r\n\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n        if (e.getKeyCode() == KeyEvent.VK_LEFT) {\r\n            player.moveLeft();\r\n        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {\r\n            player.moveRight();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n        player.setSpeedX(0);\r\n    }\r\n\r\n    void loadImage(String imageFile) {\r\n        if (needImage) {\r\n            try {\r\n                image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));\r\n                gotImage = true;\r\n            } catch (Exception e) {\r\n\r\n            }\r\n            needImage = false;\r\n        }\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/UserScreen.java b/src/UserScreen.java
+---- a/src/UserScreen.java	(revision 9d8fabb769062ad6ca9a623f076b4330a21c6546)
+-+++ b/src/UserScreen.java	(date 1652906180292)
+-@@ -15,6 +15,7 @@
+-     GameManager manager;
+-     Timer drawFrame;
+- 
+-+
+-     //constructor
+-     public UserScreen() {
+-         player = new Player(500, 900, 50, 50);
+-@@ -23,9 +24,11 @@
+-         drawFrame = new Timer(1000/60, this);
+-         drawFrame.start();
+- 
+-+
+-         if (needImage) {
+-             loadImage ("space.jpg");
+-         }
+-+
+-     }
+- 
+-     //paint the screen with active objects
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,137 +0,0 @@
+-Index: src/UserScreen.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\n\r\npublic class UserScreen extends JPanel implements ActionListener, KeyListener {\r\n\r\n    //instance variables\r\n    Player player;\r\n    GameManager manager;\r\n    Timer drawFrame;\r\n\r\n    //constructor\r\n    public UserScreen() {\r\n        player = new Player(500, 900, 50, 50);\r\n        manager = new GameManager(player);\r\n\r\n        drawFrame = new Timer(1000/60, this);\r\n        drawFrame.start();\r\n    }\r\n\r\n    //paint the screen with active objects\r\n    @Override\r\n    public void paintComponent(Graphics g) {\r\n        drawLevelScreen(g);\r\n    }\r\n\r\n    //draw current user screen\r\n    public void drawLevelScreen(Graphics g) {\r\n        manager.draw(g);\r\n    }\r\n\r\n    //update current user screen\r\n    public void updateLevelScreen() {\r\n        player.updatePlayer();\r\n    }\r\n\r\n    //key and action listener methods\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        updateLevelScreen();\r\n        repaint();\r\n    }\r\n\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n        if (e.getKeyCode() == KeyEvent.VK_LEFT) {\r\n            player.moveLeft();\r\n        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {\r\n            player.moveRight();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n        player.setSpeedX(0);\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/UserScreen.java b/src/UserScreen.java
+---- a/src/UserScreen.java	(revision 26b788a31fb1fd637fb77871a8a96703361775d7)
+-+++ b/src/UserScreen.java	(date 1652847796893)
+-@@ -9,24 +9,19 @@
+-     GameManager manager;
+-     Timer drawFrame;
+- 
+--    //constructor
+--    public UserScreen() {
+--        player = new Player(500, 900, 50, 50);
+--        manager = new GameManager(player);
+--
+--        drawFrame = new Timer(1000/60, this);
+--        drawFrame.start();
+--    }
+--
+-     //paint the screen with active objects
+-     @Override
+-     public void paintComponent(Graphics g) {
+-         drawLevelScreen(g);
+-     }
+- 
+--    //draw current user screen
+--    public void drawLevelScreen(Graphics g) {
+--        manager.draw(g);
+-+    //constructor
+-+    public UserScreen() {
+-+        drawFrame = new Timer(1000/60, this);
+-+        drawFrame.start();
+-+
+-+        player = new Player(500, 900, 50, 50);
+-+        manager = new GameManager(player);
+-     }
+- 
+-     //update current user screen
+-@@ -34,6 +29,11 @@
+-         player.updatePlayer();
+-     }
+- 
+-+    //draw current user screen
+-+    public void drawLevelScreen(Graphics g) {
+-+        manager.draw(g);
+-+    }
+-+
+-     //key and action listener methods
+-     @Override
+-     public void actionPerformed(ActionEvent e) {
+-Index: src/Player.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import java.awt.*;\r\n\r\npublic class Player extends GameObject\r\n{\r\n    //constructor\r\n    public Player(int x, int y, int width, int height) {\r\n        super(x, y, width, height, 10, 10);\r\n    }\r\n\r\n    //draw player object\r\n    public void draw(Graphics g) {\r\n        g.setColor(Color.BLACK);\r\n        g.fillRect(getX(), getY(), getWidth(), getHeight());\r\n    }\r\n\r\n    //movement methods\r\n    public void moveLeft() {\r\n        setSpeedX(-10);\r\n    }\r\n    public void moveRight() {\r\n        setSpeedX(10);\r\n    }\r\n\r\n    //update the player\r\n    public void updatePlayer() {\r\n        //if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {\r\n        setX(getX()+getSpeedX());\r\n        //}\r\n\r\n        super.update();\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/Player.java b/src/Player.java
+---- a/src/Player.java	(revision 26b788a31fb1fd637fb77871a8a96703361775d7)
+-+++ b/src/Player.java	(date 1652846925861)
+-@@ -4,7 +4,7 @@
+- {
+-     //constructor
+-     public Player(int x, int y, int width, int height) {
+--        super(x, y, width, height, 10, 10);
+-+        super(x, y, width, height, 0, 0);
+-     }
+- 
+-     //draw player object
+-@@ -21,12 +21,11 @@
+-         setSpeedX(10);
+-     }
+- 
+--    //update the player
+-+    //update the player's position
+-     public void updatePlayer() {
+--        //if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {
+--        setX(getX()+getSpeedX());
+--        //}
+--
+-+        if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {
+-+            setX(getX()+getSpeedX());
+-+        }
+-         super.update();
+-     }
+- }
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"RECTANGLE DRAWN\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/UserScreen.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/UserScreen.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29JkZBkjrphn5kGZDanawPcBhaS\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"WordInvadersDriver\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"WordInvadersDriver\" />\r\n      <module name=\"WordInvaders\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.WordInvadersDriver\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"\" />\r\n      <created>1652838631924</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652838631924</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"in progress game object\">\r\n      <created>1652840529793</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652840529793</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Driver in progress\">\r\n      <created>1652841748065</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652841748065</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"trying to get movement\">\r\n      <created>1652844020345</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652844020345</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"RECTANGLE DRAWN\">\r\n      <created>1652844611413</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652844611413</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"5\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"in progress game object\" />\r\n    <MESSAGE value=\"Driver in progress\" />\r\n    <MESSAGE value=\"trying to get movement\" />\r\n    <MESSAGE value=\"RECTANGLE DRAWN\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"RECTANGLE DRAWN\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision 26b788a31fb1fd637fb77871a8a96703361775d7)
+-+++ b/.idea/workspace.xml	(date 1652847836321)
+-@@ -1,8 +1,9 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+-   <component name="ChangeListManager">
+--    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="RECTANGLE DRAWN">
+-+    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="frame rate">
+-       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
+-       <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
+-     </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-@@ -85,7 +86,14 @@
+-       <option name="project" value="LOCAL" />
+-       <updated>1652844611413</updated>
+-     </task>
+--    <option name="localTasksCounter" value="5" />
+-+    <task id="LOCAL-00005" summary="frame rate">
+-+      <created>1652845290856</created>
+-+      <option name="number" value="00005" />
+-+      <option name="presentableId" value="LOCAL-00005" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652845290856</updated>
+-+    </task>
+-+    <option name="localTasksCounter" value="6" />
+-     <servers />
+-   </component>
+-   <component name="Vcs.Log.Tabs.Properties">
+-@@ -104,6 +112,7 @@
+-     <MESSAGE value="Driver in progress" />
+-     <MESSAGE value="trying to get movement" />
+-     <MESSAGE value="RECTANGLE DRAWN" />
+--    <option name="LAST_COMMIT_MESSAGE" value="RECTANGLE DRAWN" />
+-+    <MESSAGE value="frame rate" />
+-+    <option name="LAST_COMMIT_MESSAGE" value="frame rate" />
+-   </component>
+- </project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,49 +0,0 @@
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"test commit\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_26_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_26_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Level.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Level.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29IwL4yc2Jdr0cwPglVEZQGLwwt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/pinnellt3185/IdeaProjects/WordInvaders/src&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"JFrame\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"JFrame\" />\r\n      <module name=\"WordInvaders\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.JFrame\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"\" />\r\n      <created>1652813851118</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652813851118</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"int added\">\r\n      <created>1652814922890</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652814922890</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"int added\" />\r\n    <MESSAGE value=\"Added Classes\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Added Classes\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision 2585d9aa4a493ff0b6fd1720a3fef0f50139606d)
+-+++ b/.idea/workspace.xml	(date 1652818164697)
+-@@ -1,9 +1,9 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+-   <component name="ChangeListManager">
+--    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="test commit">
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_26_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_26_PM__Changes_.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/src/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level.java" afterDir="false" />
+-+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="JFrame commit">
+-+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-     </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-@@ -62,7 +62,14 @@
+-       <option name="project" value="LOCAL" />
+-       <updated>1652814922890</updated>
+-     </task>
+--    <option name="localTasksCounter" value="2" />
+-+    <task id="LOCAL-00002" summary="JFrame commit">
+-+      <created>1652817186646</created>
+-+      <option name="number" value="00002" />
+-+      <option name="presentableId" value="LOCAL-00002" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652817186646</updated>
+-+    </task>
+-+    <option name="localTasksCounter" value="3" />
+-     <servers />
+-   </component>
+-   <component name="Vcs.Log.Tabs.Properties">
+-@@ -79,6 +86,7 @@
+-   <component name="VcsManagerConfiguration">
+-     <MESSAGE value="int added" />
+-     <MESSAGE value="Added Classes" />
+--    <option name="LAST_COMMIT_MESSAGE" value="Added Classes" />
+-+    <MESSAGE value="JFrame commit" />
+-+    <option name="LAST_COMMIT_MESSAGE" value="JFrame commit" />
+-   </component>
+- </project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,65 +0,0 @@
+-Index: src/Player.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import java.awt.*;\r\n\r\npublic class Player extends GameObject\r\n{\r\n    //constructor\r\n    public Player(int x, int y, int width, int height) {\r\n        super(x, y, width, height);\r\n        setSpeedX(0);\r\n    }\r\n\r\n    //draw player object\r\n    public void draw(Graphics g) {\r\n        g.setColor(Color.BLACK);\r\n        g.fillRect(getX(), getY(), getWidth(), getHeight());\r\n    }\r\n\r\n    //movement methods\r\n    public void moveLeft() {\r\n        setSpeedX(-10);\r\n    }\r\n    public void moveRight() {\r\n        setSpeedX(10);\r\n    }\r\n\r\n    //update the player\r\n    public void updatePlayer() {\r\n        if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {\r\n            setX(getX()+getSpeedX());\r\n        }\r\n        super.update();\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/Player.java b/src/Player.java
+---- a/src/Player.java	(revision 9d8fabb769062ad6ca9a623f076b4330a21c6546)
+-+++ b/src/Player.java	(date 1652930030008)
+-@@ -15,9 +15,7 @@
+-     }
+- 
+-     //movement methods
+--    public void moveLeft() {
+--        setSpeedX(-10);
+--    }
+-+    public void moveLeft() { setSpeedX(-10); }
+-     public void moveRight() {
+-         setSpeedX(10);
+-     }
+-Index: src/UserScreen.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import javax.imageio.ImageIO;\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.awt.image.BufferedImage;\r\n\r\npublic class UserScreen extends JPanel implements ActionListener, KeyListener {\r\n\r\n    //instance variables\r\n    public static BufferedImage image;\r\n    public static boolean needImage = true;\r\n    public static boolean gotImage = false;\r\n\r\n    Player player;\r\n    GameManager manager;\r\n    Timer drawFrame;\r\n\r\n    //constructor\r\n    public UserScreen() {\r\n        player = new Player(500, 900, 50, 50);\r\n        manager = new GameManager(player);\r\n\r\n        drawFrame = new Timer(1000/60, this);\r\n        drawFrame.start();\r\n\r\n        if (needImage) {\r\n            loadImage (\"space.jpg\");\r\n        }\r\n    }\r\n\r\n    //paint the screen with active objects\r\n    @Override\r\n    public void paintComponent(Graphics g) {\r\n        drawLevelScreen(g);\r\n    }\r\n\r\n    //draw current user screen\r\n    public void drawLevelScreen(Graphics g) {\r\n        g.drawImage(image, 0, 0, null);\r\n        manager.draw(g);\r\n    }\r\n\r\n    //update current user screen\r\n    public void updateLevelScreen() {\r\n        player.updatePlayer();\r\n    }\r\n\r\n    //key and action listener methods\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        updateLevelScreen();\r\n        repaint();\r\n    }\r\n\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n        if (e.getKeyCode() == KeyEvent.VK_LEFT) {\r\n            player.moveLeft();\r\n        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {\r\n            player.moveRight();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n        player.setSpeedX(0);\r\n    }\r\n\r\n    void loadImage(String imageFile) {\r\n        if (needImage) {\r\n            try {\r\n                image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));\r\n                gotImage = true;\r\n            } catch (Exception e) {\r\n\r\n            }\r\n            needImage = false;\r\n        }\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/UserScreen.java b/src/UserScreen.java
+---- a/src/UserScreen.java	(revision 9d8fabb769062ad6ca9a623f076b4330a21c6546)
+-+++ b/src/UserScreen.java	(date 1652930179678)
+-@@ -20,7 +20,7 @@
+-         player = new Player(500, 900, 50, 50);
+-         manager = new GameManager(player);
+- 
+--        drawFrame = new Timer(1000/60, this);
+-+        drawFrame = new Timer(1000/600, this);
+-         drawFrame.start();
+- 
+-         if (needImage) {
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"added background fixed movement\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29IwL4yc2Jdr0cwPglVEZQGLwwt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/pinnellt3185/IdeaProjects/WordInvaders/src&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"WordInvadersDriver\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"WordInvadersDriver\" />\r\n      <module name=\"WordInvaders\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.WordInvadersDriver\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"\" />\r\n      <created>1652813851118</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652813851118</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"int added\">\r\n      <created>1652814922890</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652814922890</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"added background fixed movement\">\r\n      <created>1652905995778</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652905995778</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"int added\" />\r\n    <MESSAGE value=\"Added Classes\" />\r\n    <MESSAGE value=\"added background fixed movement\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"added background fixed movement\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision 9d8fabb769062ad6ca9a623f076b4330a21c6546)
+-+++ b/.idea/workspace.xml	(date 1652930388552)
+-@@ -4,7 +4,13 @@
+-     <option name="autoReloadType" value="SELECTIVE" />
+-   </component>
+-   <component name="ChangeListManager">
+--    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="added background fixed movement" />
+-+    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="added background fixed movement">
+-+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM__Changes_.xml" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
+-+    </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM_[Changes]" date="1652931820528" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2022 8:43 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,86 +0,0 @@
+-Index: src/Level.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.util.ArrayList;\r\nimport java.util.Random;\r\nimport javax.swing.*;\r\n\r\npublic class Level extends JPanel implements ActionListener, KeyListener {\r\n\r\n    int levelNum;\r\n    long time;\r\n    int points;\r\n    boolean cleared;\r\n    private Player player;\r\n    private ArrayList<Enemy> enemies;\r\n    private ArrayList<PowerUp> powerUps;\r\n\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n    }\r\n\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n\r\n    }\r\n    public int getTime()\r\n    {\r\n        long startTime = System.currentTimeMillis();\r\n        long elapsedTime = System.currentTimeMillis() - startTime;\r\n        long elapsedSeconds = elapsedTime / 1000;\r\n        return (int) elapsedSeconds % 60;\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/Level.java b/src/Level.java
+---- a/src/Level.java	(revision a31de48cc371242082dc50134bef184888fd85a5)
+-+++ b/src/Level.java	(date 1652986379868)
+-@@ -21,7 +21,7 @@
+- 
+-     @Override
+-     public void keyTyped(KeyEvent e) {
+--
+-+        
+-     }
+- 
+-     @Override
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"powerUp class\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/UserScreen.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/UserScreen.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29IwL4yc2Jdr0cwPglVEZQGLwwt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/pinnellt3185/IdeaProjects/WordInvaders/src&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"\" />\r\n      <created>1652813851118</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652813851118</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"int added\">\r\n      <created>1652814922890</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652814922890</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"int added\" />\r\n    <MESSAGE value=\"Added Classes\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Added Classes\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision a31de48cc371242082dc50134bef184888fd85a5)
+-+++ b/.idea/workspace.xml	(date 1652986382475)
+-@@ -4,16 +4,9 @@
+-     <option name="autoReloadType" value="SELECTIVE" />
+-   </component>
+-   <component name="ChangeListManager">
+--    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="powerUp class">
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_42_PM__Changes_.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_12_53_PM__Changes_.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_7_42_PM__Changes_.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_20_PM__Changes_.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_30_PM__Changes_.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2022_8_41_PM__Changes_.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml" afterDir="false" />
+-+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="space jpeg">
+-       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Level.java" afterDir="false" />
+-     </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-@@ -49,6 +42,11 @@
+-     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+-   }
+- }</component>
+-+  <component name="RecentsManager">
+-+    <key name="MoveFile.RECENT_KEYS">
+-+      <recent name="H:\Projects\WordInvaders\src" />
+-+    </key>
+-+  </component>
+-   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+-   <component name="TaskManager">
+-     <task active="true" id="Default" summary="Default task">
+-@@ -65,7 +63,14 @@
+-       <option name="project" value="LOCAL" />
+-       <updated>1652814922890</updated>
+-     </task>
+--    <option name="localTasksCounter" value="2" />
+-+    <task id="LOCAL-00002" summary="space jpeg">
+-+      <created>1652905788387</created>
+-+      <option name="number" value="00002" />
+-+      <option name="presentableId" value="LOCAL-00002" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652905788387</updated>
+-+    </task>
+-+    <option name="localTasksCounter" value="3" />
+-     <servers />
+-   </component>
+-   <component name="Vcs.Log.Tabs.Properties">
+-@@ -82,6 +87,7 @@
+-   <component name="VcsManagerConfiguration">
+-     <MESSAGE value="int added" />
+-     <MESSAGE value="Added Classes" />
+--    <option name="LAST_COMMIT_MESSAGE" value="Added Classes" />
+-+    <MESSAGE value="space jpeg" />
+-+    <option name="LAST_COMMIT_MESSAGE" value="space jpeg" />
+-   </component>
+- </project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,44 +0,0 @@
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"Fixed Repaint\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29JkZBkjrphn5kGZDanawPcBhaS\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"WordInvadersDriver\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"WordInvadersDriver\" />\r\n      <module name=\"WordInvaders\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.WordInvadersDriver\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"\" />\r\n      <created>1652838631924</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652838631924</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"in progress game object\">\r\n      <created>1652840529793</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652840529793</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Driver in progress\">\r\n      <created>1652841748065</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652841748065</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"trying to get movement\">\r\n      <created>1652844020345</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652844020345</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"RECTANGLE DRAWN\">\r\n      <created>1652844611413</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652844611413</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Fixed Repaint\">\r\n      <created>1652846702631</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652846702631</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"6\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"in progress game object\" />\r\n    <MESSAGE value=\"Driver in progress\" />\r\n    <MESSAGE value=\"trying to get movement\" />\r\n    <MESSAGE value=\"RECTANGLE DRAWN\" />\r\n    <MESSAGE value=\"Fixed Repaint\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Fixed Repaint\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision 2bed264aaa04e10b85439f5878787e268ac5613c)
+-+++ b/.idea/workspace.xml	(date 1652847773921)
+-@@ -4,7 +4,9 @@
+-     <option name="autoReloadType" value="SELECTIVE" />
+-   </component>
+-   <component name="ChangeListManager">
+--    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="Fixed Repaint" />
+-+    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="Fixed Repaint">
+-+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-+    </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+-@@ -92,7 +94,21 @@
+-       <option name="project" value="LOCAL" />
+-       <updated>1652846702631</updated>
+-     </task>
+--    <option name="localTasksCounter" value="6" />
+-+    <task id="LOCAL-00006" summary="Fixed Repaint">
+-+      <created>1652847163705</created>
+-+      <option name="number" value="00006" />
+-+      <option name="presentableId" value="LOCAL-00006" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652847163705</updated>
+-+    </task>
+-+    <task id="LOCAL-00007" summary="Fixed Repaint">
+-+      <created>1652847233763</created>
+-+      <option name="number" value="00007" />
+-+      <option name="presentableId" value="LOCAL-00007" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652847233763</updated>
+-+    </task>
+-+    <option name="localTasksCounter" value="8" />
+-     <servers />
+-   </component>
+-   <component name="Vcs.Log.Tabs.Properties">
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM__Changes_.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM_[Changes]" date="1652930554282" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 5/18/2022 8:22 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM_[Changes]/shelved.patch	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ /dev/null	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
+@@ -1,99 +0,0 @@
+-Index: src/UserScreen.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import javax.imageio.ImageIO;\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.*;\r\nimport java.awt.image.BufferedImage;\r\n\r\npublic class UserScreen extends JPanel implements ActionListener, KeyListener {\r\n\r\n    //image loading variables\r\n    public static BufferedImage image;\r\n    public static boolean needImage = true;\r\n    public static boolean gotImage = false;\r\n\r\n    //instance variables\r\n    Player player;\r\n    GameManager manager;\r\n    Timer drawFrame;\r\n\r\n    //constructor\r\n    public UserScreen() {\r\n        player = new Player(500, 900, 50, 50);\r\n        manager = new GameManager(player);\r\n\r\n        //timer that runs the \"frame rate\"\r\n        drawFrame = new Timer(1000/144, this);\r\n        drawFrame.start();\r\n\r\n        if (needImage) {\r\n            loadImage(\"space.jpg\");\r\n        }\r\n    }\r\n\r\n    //paint the screen (JPanel) with initial active objects\r\n    @Override\r\n    public void paintComponent(Graphics g) {\r\n        drawLevelScreen(g);\r\n    }\r\n\r\n    //draws the initial level screen\r\n    public void drawLevelScreen(Graphics g) {\r\n        g.drawImage(image, 0, 0, null);\r\n        manager.draw(g);\r\n    }\r\n\r\n    //updates current level screen periodically\r\n    public void updateLevelScreen() {\r\n        player.updatePlayer();\r\n    }\r\n\r\n    //key and action listener methods\r\n    //action performed method runs at a certain frame rate\r\n    @Override\r\n    public void actionPerformed(ActionEvent e) {\r\n        //update all objects then repaint the screen\r\n        updateLevelScreen();\r\n        repaint();\r\n    }\r\n\r\n    //reads when a key is typed by the user\r\n    @Override\r\n    public void keyTyped(KeyEvent e) {\r\n\r\n    }\r\n\r\n    //reads when the user presses a key and translates into code\r\n    @Override\r\n    public void keyPressed(KeyEvent e) {\r\n        if (e.getKeyCode() == KeyEvent.VK_LEFT) {\r\n            player.moveLeft();\r\n        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {\r\n            player.moveRight();\r\n        }\r\n    }\r\n\r\n    //stops movement upon release of a key\r\n    @Override\r\n    public void keyReleased(KeyEvent e) {\r\n        player.setSpeedX(0);\r\n    }\r\n\r\n    //image loading method\r\n    void loadImage(String imageFile) {\r\n        if (needImage) {\r\n            try {\r\n                image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));\r\n                gotImage = true;\r\n            } catch (Exception e) {}\r\n            needImage = false;\r\n        }\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/UserScreen.java b/src/UserScreen.java
+---- a/src/UserScreen.java	(revision 43f4faafac2dbb2bccded8c5802cc63fac7b9c97)
+-+++ b/src/UserScreen.java	(date 1652931237645)
+-@@ -18,7 +18,7 @@
+- 
+-     //constructor
+-     public UserScreen() {
+--        player = new Player(500, 900, 50, 50);
+-+        player = new Player(500, 875, 75, 75);
+-         manager = new GameManager(player);
+- 
+-         //timer that runs the "frame rate"
+-Index: src/Player.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>import java.awt.*;\r\n\r\npublic class Player extends GameObject {\r\n\r\n    //constructor\r\n    public Player(int x, int y, int width, int height) {\r\n        super(x, y, width, height, 0, 0);\r\n    }\r\n\r\n    //draw initial player object\r\n    public void draw(Graphics g) {\r\n        g.setColor(Color.BLACK);\r\n        g.fillRect(getX(), getY(), getWidth(), getHeight());\r\n    }\r\n\r\n    //movement methods (moves player by incrementing the x-position by a \"speed\" value)\r\n    public void moveLeft() {\r\n        setSpeedX(-14);\r\n    }\r\n    public void moveRight() {\r\n        setSpeedX(14);\r\n    }\r\n\r\n    //update the player's position according to the speed\r\n    public void updatePlayer() {\r\n        //check if player remains within bounds\r\n        if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {\r\n            setX(getX()+getSpeedX());\r\n        }\r\n        super.update();\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/src/Player.java b/src/Player.java
+---- a/src/Player.java	(revision 43f4faafac2dbb2bccded8c5802cc63fac7b9c97)
+-+++ b/src/Player.java	(date 1652931177551)
+-@@ -15,16 +15,16 @@
+- 
+-     //movement methods (moves player by incrementing the x-position by a "speed" value)
+-     public void moveLeft() {
+--        setSpeedX(-14);
+-+        setSpeedX(-13);
+-     }
+-     public void moveRight() {
+--        setSpeedX(14);
+-+        setSpeedX(13);
+-     }
+- 
+-     //update the player's position according to the speed
+-     public void updatePlayer() {
+-         //check if player remains within bounds
+--        if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX()) < WordInvadersDriver.WIDTH) {
+-+        if ((getX() + getSpeedX()) >= 0 && (getX() + getWidth() + getSpeedX() + 13) < WordInvadersDriver.WIDTH) {
+-             setX(getX()+getSpeedX());
+-         }
+-         super.update();
+-Index: .idea/workspace.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"aad3313d-e0d0-4d09-8bad-cbc18e0a7e02\" name=\"Changes\" comment=\"comments\">\r\n      <change beforePath=\"$PROJECT_DIR$/src/GameObject.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/GameObject.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Player.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Player.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/WordInvadersDriver.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/WordInvadersDriver.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29IwL4yc2Jdr0cwPglVEZQGLwwt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/pinnellt3185/IdeaProjects/WordInvaders/src&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"WordInvadersDriver\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"WordInvadersDriver\" />\r\n      <module name=\"WordInvaders\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.WordInvadersDriver\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"\" />\r\n      <created>1652813851118</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652813851118</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"int added\">\r\n      <created>1652814922890</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652814922890</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"added background fixed movement\">\r\n      <created>1652905995778</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652905995778</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"comments\">\r\n      <created>1652930524669</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652930524669</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"int added\" />\r\n    <MESSAGE value=\"Added Classes\" />\r\n    <MESSAGE value=\"added background fixed movement\" />\r\n    <MESSAGE value=\"comments\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"comments\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+---- a/.idea/workspace.xml	(revision 43f4faafac2dbb2bccded8c5802cc63fac7b9c97)
+-+++ b/.idea/workspace.xml	(date 1652931491217)
+-@@ -4,10 +4,10 @@
+-     <option name="autoReloadType" value="SELECTIVE" />
+-   </component>
+-   <component name="ChangeListManager">
+--    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="comments">
+--      <change beforePath="$PROJECT_DIR$/src/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameObject.java" afterDir="false" />
+-+    <list default="true" id="aad3313d-e0d0-4d09-8bad-cbc18e0a7e02" name="Changes" comment="changed speed">
+-+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-       <change beforePath="$PROJECT_DIR$/src/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Player.java" afterDir="false" />
+--      <change beforePath="$PROJECT_DIR$/src/WordInvadersDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WordInvadersDriver.java" afterDir="false" />
+-+      <change beforePath="$PROJECT_DIR$/src/UserScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UserScreen.java" afterDir="false" />
+-     </list>
+-     <option name="SHOW_DIALOG" value="false" />
+-     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+-@@ -87,7 +87,14 @@
+-       <option name="project" value="LOCAL" />
+-       <updated>1652930524669</updated>
+-     </task>
+--    <option name="localTasksCounter" value="4" />
+-+    <task id="LOCAL-00004" summary="changed speed">
+-+      <created>1652930934029</created>
+-+      <option name="number" value="00004" />
+-+      <option name="presentableId" value="LOCAL-00004" />
+-+      <option name="project" value="LOCAL" />
+-+      <updated>1652930934029</updated>
+-+    </task>
+-+    <option name="localTasksCounter" value="5" />
+-     <servers />
+-   </component>
+-   <component name="Vcs.Log.Tabs.Properties">
+-@@ -106,6 +113,7 @@
+-     <MESSAGE value="Added Classes" />
+-     <MESSAGE value="added background fixed movement" />
+-     <MESSAGE value="comments" />
+--    <option name="LAST_COMMIT_MESSAGE" value="comments" />
+-+    <MESSAGE value="changed speed" />
+-+    <option name="LAST_COMMIT_MESSAGE" value="changed speed" />
+-   </component>
+- </project>
+-\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"fixed images\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Enum\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"29IwL4yc2Jdr0cwPglVEZQGLwwt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/tobyp_8bbjnrg/IdeaProjects/WordInvaders/src&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\tobyp_8bbjnrg\\IdeaProjects\\WordInvaders\\src\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"H:\\Projects\\WordInvaders\\src\\Main\" />\r\n      <recent name=\"C:\\Users\\tobyp_8bbjnrg\\IdeaProjects\\WordInvaders\\src\" />\r\n      <recent name=\"H:\\Projects\\WordInvaders\\src\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"WordInvadersDriver\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"WordInvadersDriver\" />\r\n      <module name=\"WordInvaders\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.WordInvadersDriver\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f\" name=\"Changes\" comment=\"fixed formatting\" />\r\n      <created>1652813851118</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1652813851118</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"int added\">\r\n      <created>1652814922890</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652814922890</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"added background fixed movement\">\r\n      <created>1652905995778</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652905995778</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"enemy spawner\">\r\n      <created>1652988307800</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652988307800</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"enemy png\">\r\n      <created>1652988813453</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652988813453</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"lasers working\">\r\n      <created>1652990182909</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1652990182909</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"cleaned up fonts\">\r\n      <created>1653023930943</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653023930944</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"TYPING WORKS\">\r\n      <created>1653026577401</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653026577401</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"powerups\">\r\n      <created>1653074647960</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653074647960</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"powerups\">\r\n      <created>1653074726712</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653074726712</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"fixed powerups\">\r\n      <created>1653076524380</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653076524380</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"fixed powerups\">\r\n      <created>1653076638076</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653076638076</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"fixed formatting\">\r\n      <created>1653077787297</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653077787297</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"screen swapping\">\r\n      <created>1653335625088</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653335625088</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"four and six letter\">\r\n      <created>1653336349525</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653336349525</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00015\" summary=\"four and six letter\">\r\n      <created>1653336409384</created>\r\n      <option name=\"number\" value=\"00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00015\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653336409384</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00016\" summary=\"level 3 start\">\r\n      <created>1653423352729</created>\r\n      <option name=\"number\" value=\"00016\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00016\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653423352729</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00017\" summary=\"triple lasers\">\r\n      <created>1653451449835</created>\r\n      <option name=\"number\" value=\"00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00017\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653451449835</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00018\" summary=\"fix\">\r\n      <created>1653452279649</created>\r\n      <option name=\"number\" value=\"00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00018\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653452279649</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00019\" summary=\"fixed images\">\r\n      <created>1653510750095</created>\r\n      <option name=\"number\" value=\"00019\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00019\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1653510750095</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"20\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"int added\" />\r\n    <MESSAGE value=\"Added Classes\" />\r\n    <MESSAGE value=\"added background fixed movement\" />\r\n    <MESSAGE value=\"enemy spawner\" />\r\n    <MESSAGE value=\"enemy png\" />\r\n    <MESSAGE value=\"lasers working\" />\r\n    <MESSAGE value=\"cleaned up fonts\" />\r\n    <MESSAGE value=\"TYPING WORKS\" />\r\n    <MESSAGE value=\"powerups\" />\r\n    <MESSAGE value=\"fixed powerups\" />\r\n    <MESSAGE value=\"fixed formatting\" />\r\n    <MESSAGE value=\"screen swapping\" />\r\n    <MESSAGE value=\"four and six letter\" />\r\n    <MESSAGE value=\"four and six letter fixed\" />\r\n    <MESSAGE value=\"level 3 start\" />\r\n    <MESSAGE value=\"triple lasers\" />\r\n    <MESSAGE value=\"fix\" />\r\n    <MESSAGE value=\"fixed images\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"fixed images\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision cc0899a1da78de340a42f1ae0c4b2dde9eb5b2f2)
++++ b/.idea/workspace.xml	(date 1653593816294)
+@@ -4,7 +4,34 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="fixed images" />
++    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="fixed images">
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_31_PM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_12_46_PM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_1_30_PM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_7_55_PM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_11_PM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_22_PM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_18_2022_8_43_PM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_49_AM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM_[Changes]/shelved.patch" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_19_2022_11_53_AM__Changes_.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_12_59_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_12_59_PM__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_04_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_04_PM__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_04_PM__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_04_PM__Changes_1.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_07_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_23_2022_1_07_PM__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_24_2022_12_45_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_24_2022_12_45_PM__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_25_2022_12_29_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_25_2022_12_29_PM__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_25_2022_1_21_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_25_2022_1_21_PM__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -46,6 +73,7 @@
+       <recent name="C:\Users\tobyp_8bbjnrg\IdeaProjects\WordInvaders\src" />
+     </key>
+     <key name="MoveFile.RECENT_KEYS">
++      <recent name="H:\Projects\WordInvaders\src\ImagesAndText" />
+       <recent name="H:\Projects\WordInvaders\src\Main" />
+       <recent name="C:\Users\tobyp_8bbjnrg\IdeaProjects\WordInvaders\src" />
+       <recent name="H:\Projects\WordInvaders\src" />
