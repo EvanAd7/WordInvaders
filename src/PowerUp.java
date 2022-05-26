@@ -15,7 +15,7 @@ public class PowerUp extends GameObject {
         if(imageNumber == 1) {
             loadImage("ImagesAndText/powerup.png");
         } else if(imageNumber == 2) {
-            loadImage("ImagesAndText/powerup.png");
+            loadImage("ImagesAndText/heart.png");
         } else if(imageNumber == 3) {
             loadImage("ImagesAndText/shield2.png");
         } else if(imageNumber == 4) {
