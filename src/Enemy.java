@@ -12,7 +12,7 @@ public class Enemy extends GameObject {
     public Enemy(int x, int y, int width, int height, int imageNumber) {
         super(x, y, width, height, 0, 1);
         if(imageNumber == 1) {
-            loadImage("ImagesAndText/enemy.png");
+            loadImage("ImagesAndText/enemyShip1.png");
         } else if(imageNumber == 2) {
             loadImage("ImagesAndText/enemy.png");
         } else if(imageNumber == 3) {
@@ -23,6 +23,7 @@ public class Enemy extends GameObject {
             System.out.println("ImageFile invalid");
         }
     }
+
 
     //draws enemy objects
     public void draw(Graphics g) {

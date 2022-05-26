@@ -43,7 +43,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         drawFrame.start();
 
         //change the background for different levels
-        image1 = loadImage("ImagesAndText/space.jpg");
+        image1 = loadImage("ImagesAndText/SolarSystem.jpg");
         image2 = loadImage("ImagesAndText/space.jpg");
         image3 = loadImage("ImagesAndText/space.jpg");
         image4 = loadImage("ImagesAndText/blackhole.jpg");
@@ -164,6 +164,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.GREEN);
         switch (status) {
             case LEVEL1:
+                g.setColor(Color.GREEN);
                 g.drawString("Score: " + level1Manager.getPoints(), 10, 30);
                 g.drawString("Level 1", 10,950);
                 break;
