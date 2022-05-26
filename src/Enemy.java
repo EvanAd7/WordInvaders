@@ -18,9 +18,9 @@ public class Enemy extends GameObject {
         } else if(imageNumber == 3) {
             loadImage("ImagesAndText/enemy.png");
         } else if(imageNumber == 4) {
-            loadImage("ImagesAndText/enemy.png");
+            loadImage("ImagesAndText/demonShip.png");
         } else {
-            System.out.println("Number for ImageFile Invalid");
+            System.out.println("ImageFile invalid");
         }
     }
 

@@ -46,8 +46,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         image1 = loadImage("ImagesAndText/space.jpg");
         image2 = loadImage("ImagesAndText/space.jpg");
         image3 = loadImage("ImagesAndText/space.jpg");
-        image4 = loadImage("ImagesAndText/impossibleSpace.jpg");
-
+        image4 = loadImage("ImagesAndText/blackhole.jpg");
     }
 
     //draws the menu screen
