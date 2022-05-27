@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="Added different images for level 1." />
+    <list default="true" id="ad717c3b-c1b7-40ae-b0e7-6b4ea63b2c7f" name="Changes" comment="level 3 images and heart">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,7 +48,7 @@
       <recent name="C:\Users\tobyp_8bbjnrg\IdeaProjects\WordInvaders\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\rens4909\IdeaProjects\WordInvaders\src\ImagesAndText" />
+      <recent name="H:\Projects\WordInvaders\src\ImagesAndText" />
       <recent name="H:\Projects\WordInvaders\src\Main" />
       <recent name="C:\Users\tobyp_8bbjnrg\IdeaProjects\WordInvaders\src" />
       <recent name="H:\Projects\WordInvaders\src" />
@@ -250,12 +252,12 @@
       <option name="project" value="LOCAL" />
       <updated>1653596003934</updated>
     </task>
-    <task id="LOCAL-00026" summary="Added different images for level 1.">
-      <created>1653596989725</created>
+    <task id="LOCAL-00026" summary="level 3 images and heart">
+      <created>1653597271350</created>
       <option name="number" value="00026" />
       <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
-      <updated>1653596989725</updated>
+      <updated>1653597271350</updated>
     </task>
     <option name="localTasksCounter" value="27" />
     <servers />
@@ -294,8 +296,8 @@
     <MESSAGE value="level 4 images" />
     <MESSAGE value="fix" />
     <MESSAGE value="words turn green" />
-    <MESSAGE value="Added different images for level 1." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added different images for level 1." />
+    <MESSAGE value="level 3 images and heart" />
+    <option name="LAST_COMMIT_MESSAGE" value="level 3 images and heart" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
