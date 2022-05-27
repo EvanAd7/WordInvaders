@@ -285,7 +285,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-    //reads when a key is typed by the user
+    //default KeyListener (not used)
     @Override
     public void keyTyped(KeyEvent e) {
     }

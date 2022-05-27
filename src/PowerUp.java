@@ -12,13 +12,13 @@ public class PowerUp extends GameObject {
     public PowerUp(int x, int y, int width, int height, int imageNumber) {
         super(x, y, width, height, 0, 5);
 
-        if(imageNumber == 1) {
+        if (imageNumber == 1) {
             loadImage("ImagesAndText/powerup.png");
-        } else if(imageNumber == 2) {
+        } else if (imageNumber == 2) {
             loadImage("ImagesAndText/powerup.png");
-        } else if(imageNumber == 3) {
+        } else if (imageNumber == 3) {
             loadImage("ImagesAndText/shield2.png");
-        } else if(imageNumber == 4) {
+        } else if (imageNumber == 4) {
             loadImage("ImagesAndText/meteor.png");
         } else {
             System.out.println("ImageFile invalid");
@@ -27,7 +27,7 @@ public class PowerUp extends GameObject {
 
     //draws power up object
     public void draw(Graphics g) {
-            g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
+        g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
     }
 
     //update the power-up's position according to the speed
