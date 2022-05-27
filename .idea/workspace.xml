@@ -259,7 +259,21 @@
       <option name="project" value="LOCAL" />
       <updated>1653597271350</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Added different images for level 1.">
+      <created>1653677575790</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1653677575790</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Added different images for level 1.">
+      <created>1653677827105</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1653677827105</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
