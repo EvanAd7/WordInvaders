@@ -371,13 +371,13 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                     status = Status.LEVEL1;
                     tempStatus = Status.LEVEL1;
                     wordReader = new WordReader(4);
-                    spawner = new Timer(4000, level1Manager);
+                    spawner = new Timer(3300, level1Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_2) {
                     status = Status.LEVEL2;
                     tempStatus = Status.LEVEL2;
                     wordReader = new WordReader(5);
-                    spawner = new Timer(3000, level2Manager);
+                    spawner = new Timer(2500, level2Manager);
                     spawner.start();
                 } else if (e.getKeyCode() == KeyEvent.VK_3) {
                     status = Status.LEVEL3;
@@ -389,7 +389,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
                     status = Status.LEVEL4;
                     tempStatus = Status.LEVEL4;
                     wordReader = new WordReader(6);
-                    spawner = new Timer(1000, level4Manager);
+                    spawner = new Timer(1200, level4Manager);
                     spawner.start();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
