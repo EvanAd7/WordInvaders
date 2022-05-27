@@ -54,10 +54,11 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 30));
-
         g.setColor(Color.WHITE);
-        g.drawString("WORD INVADERS", 350, 150);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("WORD INVADERS", 270, 150);
+
+        g.setFont(new Font("Arial", Font.BOLD, 30));
         g.drawString("Press key: 1, 2, 3, 4 for respective levels", 200, 250);
         g.drawString("Level 1: Easy", 350, 400);
         g.drawString("Level 2: Medium", 350, 450);
@@ -73,8 +74,9 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);
 
         g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.setFont(new Font("Arial", Font.BOLD, 30));
         g.drawString("How to play WORD INVADERS:", 250, 100);
+        g.drawString("Press SPACE to return to menu", 250, 800);
 
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString("Word Invaders is an outer-space themed game designed to improve your typing skills. ", 100, 200);
@@ -90,8 +92,10 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.drawString("that you must type are longer. Each level also has it's own power-ups, which ", 100, 500);
         g.drawString("provide boosts such as temporary invincibility. Good luck and happy typing!", 100, 530);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 30));
-        g.drawString("Press SPACE to return to menu", 250, 700);
+        g.drawString("Level 1 Power-Up: Temporary score doubler", 300, 600);
+        g.drawString("Level 2 Power-Up: Extra life", 300, 630);
+        g.drawString("Level 3 Power-Up: Temporary invincibility", 300, 660);
+        g.drawString("Level 4 Power-Up: Temporary triple lasers", 300, 690);
     }
 
     //draws the game-over screen
@@ -99,11 +103,12 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.RED);
         g.fillRect(0, 0, WordInvadersDriver.WIDTH, WordInvadersDriver.HEIGHT);
 
-        g.setFont(new Font("Arial", Font.PLAIN, 50));
-
         g.setColor(Color.BLACK);
-        g.drawString("GAME OVER!", 320, 200);
-        g.drawString("Press SPACE to return to menu", 150, 600);
+        g.setFont(new Font("Arial", Font.BOLD, 100));
+        g.drawString("GAME OVER!", 170, 200);
+
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        g.drawString("Press SPACE to return to menu", 130, 600);
 
         switch (tempStatus) {
             case LEVEL1:
@@ -159,12 +164,11 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
 
     //draw text for the level at the top of the screen
     public void drawText(Graphics g) {
-        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.setFont(new Font("Arial", Font.BOLD, 30));
 
         g.setColor(Color.GREEN);
         switch (status) {
             case LEVEL1:
-                g.setColor(Color.GREEN);
                 g.drawString("Score: " + level1Manager.getPoints(), 10, 30);
                 g.drawString("Level 1", 10,950);
                 break;
@@ -187,9 +191,9 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         if (wordReader.getWordTyped().equals(wordReader.getCurrentWord())) {
             g.setColor(Color.GREEN);
         } else {
-            g.setColor(Color.WHITE);
+            g.setColor(Color.RED);
         }
-        g.drawString(wordReader.getWordTyped(), 440, 70);
+        g.drawString(wordReader.getWordTyped(), 455, 70);
     }
 
     //draws the level 1 screen
@@ -286,7 +290,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 
-    //reads when a key is typed by the user
+    //default KeyListener (not used)
     @Override
     public void keyTyped(KeyEvent e) {
     }

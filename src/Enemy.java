@@ -11,13 +11,14 @@ public class Enemy extends GameObject {
     //constructor
     public Enemy(int x, int y, int width, int height, int imageNumber) {
         super(x, y, width, height, 0, 1);
-        if(imageNumber == 1) {
+
+        if (imageNumber == 1) {
             loadImage("ImagesAndText/enemyShip1.png");
-        } else if(imageNumber == 2) {
+        } else if (imageNumber == 2) {
             loadImage("ImagesAndText/enemy.png");
-        } else if(imageNumber == 3) {
+        } else if (imageNumber == 3) {
             loadImage("ImagesAndText/enemy1.png");
-        } else if(imageNumber == 4) {
+        } else if (imageNumber == 4) {
             loadImage("ImagesAndText/demonShip.png");
         } else {
             System.out.println("ImageFile invalid");

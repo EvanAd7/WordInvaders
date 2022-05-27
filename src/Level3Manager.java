@@ -144,6 +144,7 @@ public class Level3Manager implements ActionListener {
 
         points = 0;
         player.setLives(3);
+        invincible = false;
     }
 
     //spawn objects at a certain rate (rate decided in UserScreen)

@@ -28,7 +28,7 @@ public class WordReader {
         wordTyped += letter;
     }
 
-    //user typed "backspace" method
+    //backspace method
     public void backspace() {
         if (wordTyped.length() > 0) {
             wordTyped = wordTyped.substring(0, wordTyped.length() - 1);

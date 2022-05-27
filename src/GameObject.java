@@ -16,7 +16,6 @@ public class GameObject {
 
     //constructor
     GameObject(int x, int y, int width, int height, int speedX, int speedY) {
-
         this.x = x;
         this.y = y;
         this.width = width;
