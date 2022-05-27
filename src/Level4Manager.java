@@ -13,7 +13,7 @@ public class Level4Manager implements ActionListener {
     private int points = 0;
     private int counter = 0;
 
-    private int timeCounter = 0;
+    private int powerCounter = 0;
     private boolean hasPowerUp = false;
 
     //constructor
@@ -164,9 +164,9 @@ public class Level4Manager implements ActionListener {
         }
 
         if (hasPowerUp) {
-            timeCounter++;
+            powerCounter++;
         }
-        if (timeCounter % 10 == 0) {
+        if (powerCounter % 10 == 0) {
             hasPowerUp = false;
         }
     }

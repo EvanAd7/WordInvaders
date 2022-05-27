@@ -168,6 +168,7 @@ public class Level1Manager implements ActionListener {
 
         points = 0;
         player.setLives(3);
+        powerUp = false;
     }
 
     //spawn objects at a certain rate (rate decided in UserScreen)
