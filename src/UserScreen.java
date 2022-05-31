@@ -89,7 +89,7 @@ public class UserScreen extends JPanel implements ActionListener, KeyListener {
         g.drawString("Additionally, if an enemy is allowed to reach the bottom of your screen, you ", 100, 410);
         g.drawString("will lose a life. Lose all of your lives, and it's game over! Each level is ", 100, 440);
         g.drawString("a certain difficulty; in harder levels the enemies spawn faster and the words ", 100, 470);
-        g.drawString("that you must type are longer. Each level also has it's own power-ups, which ", 100, 500);
+        g.drawString("that you must type are longer. Each level also has its own power-ups, which ", 100, 500);
         g.drawString("provide boosts such as temporary invincibility. Good luck and happy typing!", 100, 530);
 
         g.drawString("Level 1 Power-Up: Temporary score doubler", 300, 600);
